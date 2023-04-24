@@ -20,18 +20,22 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Registration extends AppCompatActivity {
     TextView tvEmailErr, tvPasswordErr, tvPasswordReturnErr, tvNameErr;
     EditText etEmail, etPassword, etUser_name, etReturn_password;
     Button btReg;
     CheckBox checkBox;
-    boolean x = false;
-    String email, name, password;
     Vibrator vibrator;
     int mls = 100;
+    FirebaseDatabase database;
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +89,20 @@ public class Registration extends AppCompatActivity {
                         if (etPassword.getText().toString().equals(etReturn_password.getText().toString())) {
                             tvPasswordReturnErr.setText("");
                             if (checkBox.isChecked()) {
-                                email = etEmail.getText().toString();
-                                name = etUser_name.getText().toString();
-                                password = etPassword.getText().toString();
+
+                                database = FirebaseDatabase.getInstance();
+                                reference = database.getReference("users");
+
+                                String email = etEmail.getText().toString();
+                                String name = etUser_name.getText().toString();
+                                String password = etPassword.getText().toString();
+                                HelperClass helperClass = new HelperClass(email, name, password);
+
+                                reference.child(name).setValue(helperClass);
+                                Toast.makeText(this, "бобра", Toast.LENGTH_SHORT).show();
 
                                 startActivity(new Intent(Registration.this, List.class));
+
                             } else {
                                 Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
                                 checkBox.setAnimation(shake);

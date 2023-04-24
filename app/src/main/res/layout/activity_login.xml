@@ -63,6 +63,7 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <EditText
+            android:text="Константин"
             android:id="@+id/editText_gmail_login"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -112,6 +113,7 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <EditText
+            android:text="30032006"
             android:id="@+id/et_password_login"
             android:layout_width="match_parent"
             android:layout_height="48dp"
