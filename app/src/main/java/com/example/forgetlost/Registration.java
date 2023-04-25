@@ -1,7 +1,6 @@
 package com.example.forgetlost;
 
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,8 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Registration extends AppCompatActivity {
-    TextView tvEmailErr, tvPasswordErr, tvPasswordReturnErr, tvNameErr;
-    EditText etEmail, etPassword, etUser_name, etReturn_password;
+    EditText etEmail, etPassword, etname, etUserName;
     Button btReg;
     CheckBox checkBox;
     Vibrator vibrator;
@@ -43,15 +41,11 @@ public class Registration extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         {
             etEmail = findViewById(R.id.editText_gmail);
-            etUser_name = findViewById(R.id.editText_name);
+            etUserName = findViewById(R.id.editText_nickname);
+            etname = findViewById(R.id.editText_name);
             etPassword = findViewById(R.id.editText_password);
-            etReturn_password = findViewById(R.id.editText_return_password);
             checkBox = findViewById(R.id.checkBox);
             btReg = findViewById(R.id.btRegisterEnd);
-            tvEmailErr = findViewById(R.id.tvEmailERROR);
-            tvPasswordErr = findViewById(R.id.tvPasswordERROR);
-            tvPasswordReturnErr = findViewById(R.id.tvPasswordReturnERROR);
-            tvNameErr = findViewById(R.id.tvNameERROR);
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         }
         SpannableString ss = new SpannableString("Даю согласие на обработку \n " + "  " + "персональных данных");
@@ -78,29 +72,29 @@ public class Registration extends AppCompatActivity {
     }
 
     public void RegClick(View view) {
-        if (checkEmail(etEmail)) {
-            tvEmailErr.setText("");
-            if (etUser_name.getText().toString().length() != 0) {
-                tvNameErr.setText("");
-                if (etPassword.getText().toString().length() >= 8) {
-                    tvPasswordErr.setText("");
-                    if (!etPassword.getText().toString().matches("(.*) (.*)")) {
-                        tvPasswordErr.setText("");
-                        if (etPassword.getText().toString().equals(etReturn_password.getText().toString())) {
-                            tvPasswordReturnErr.setText("");
+        if (etUserName.getText().toString().length() != 0) {
+            etUserName.setError(null);
+
+            if (checkEmail(etEmail)) {
+                etEmail.setError(null);
+                if (etname.getText().toString().length() != 0) {
+                    etname.setError(null);
+                    if (etPassword.getText().toString().length() >= 8) {
+                        etPassword.setError(null);
+                        if (!etPassword.getText().toString().matches("(.*) (.*)")) {
+                            etPassword.setError(null);
                             if (checkBox.isChecked()) {
 
                                 database = FirebaseDatabase.getInstance();
                                 reference = database.getReference("users");
 
                                 String email = etEmail.getText().toString();
-                                String name = etUser_name.getText().toString();
+                                String name = etname.getText().toString();
                                 String password = etPassword.getText().toString();
-                                HelperClass helperClass = new HelperClass(email, name, password);
+                                String userName = etUserName.getText().toString();
+                                HelperClass helperClass = new HelperClass(email, name, password, userName);
 
-                                reference.child(name).setValue(helperClass);
-
-                                Toast.makeText(this, "бобра", Toast.LENGTH_SHORT).show();
+                                reference.child(userName).setValue(helperClass);
 
                                 startActivity(new Intent(Registration.this, List.class));
 
@@ -108,27 +102,26 @@ public class Registration extends AppCompatActivity {
                                 Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
                                 checkBox.setAnimation(shake);
                                 checkBox.setDrawingCacheBackgroundColor(Color.RED);
+                                vibrator.vibrate(mls);
                             }
-
                         } else {
-                            etReturn_password.setError("Пароли не совпадают");
+                            etPassword.setError("Пароль не должен содержать пробелы");
                             vibrator.vibrate(mls);
                         }
                     } else {
-                        etPassword.setError("Пароль не должен содержать пробелы");
+                        etPassword.setError("Пароль должен содержать не менее 8 символов");
                         vibrator.vibrate(mls);
                     }
                 } else {
-                    etPassword.setError("Пароль должен содержать не менее 8 символов");
+                    etname.setError("Вы не ввели имя");
                     vibrator.vibrate(mls);
                 }
             } else {
-                etUser_name.setError("Вы не ввели имя");
+                etEmail.setError("Некорректно введена почта ");
                 vibrator.vibrate(mls);
             }
         } else {
-            etEmail.setError("Некорректно введена почта ");
-            vibrator.vibrate(mls);
+            etUserName.setError("Ваш никнейм не может быть пустым");
         }
     }
 

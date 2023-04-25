@@ -11,9 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
         android:background="@drawable/bg_stroke"
         android:elevation="30dp"
-        android:layout_marginHorizontal="30dp"
         android:orientation="vertical">
 
         <TextView
@@ -34,6 +34,42 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
+            android:id="@+id/tv0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:fontFamily="serif"
+            android:text="Никнейм в приложении"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+
+        <EditText
+            android:id="@+id/editText_gmail"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/bg"
+            android:drawableLeft="@drawable/ic_baseline_email_24"
+            android:drawablePadding="10dp"
+
+            android:ems="10"
+            android:hint="userName"
+            android:inputType="textPersonName"
+            android:padding="15sp"
+            android:text="pilmeshok@gmail.com"
+            android:textColor="#7E7E9A"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv1" />
+
+        <TextView
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,26 +79,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView1" />
-
-        <TextView
-            android:id="@+id/tvEmailERROR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:layout_marginBottom="7dp"
-            android:text=""
-            android:textColor="#DF382C"
-            android:textSize="12dp"
-            app:layout_constraintBottom_toTopOf="@+id/editText_gmail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.265"
-            app:layout_constraintStart_toEndOf="@+id/tv1"
-            app:layout_constraintTop_toBottomOf="@+id/textView1"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_nickname" />
 
         <EditText
-            android:id="@+id/editText_gmail"
+            android:id="@+id/editText_nickname"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginLeft="20dp"
@@ -75,13 +95,13 @@
             android:hint="user@email.com"
             android:inputType="textPersonName"
             android:padding="15sp"
-            android:text="pilmeshok@gmail.com"
+            android:text="pilmeshok"
             android:textColor="#7E7E9A"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv1" />
+            app:layout_constraintTop_toBottomOf="@+id/tv0" />
 
         <TextView
             android:id="@+id/tv2"
@@ -94,24 +114,6 @@
             app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText_gmail" />
-
-
-        <TextView
-            android:id="@+id/tvNameERROR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="7dp"
-            android:fontFamily="serif"
-            android:text=""
-            android:textColor="#DF382C"
-            android:textSize="12dp"
-            app:layout_constraintBottom_toTopOf="@+id/editText_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
-            app:layout_constraintStart_toEndOf="@+id/tv2"
-            app:layout_constraintTop_toBottomOf="@+id/editText_gmail"
-            app:layout_constraintVertical_bias="0.0" />
 
         <EditText
             android:id="@+id/editText_name"
@@ -146,22 +148,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText_name" />
 
-        <TextView
-            android:id="@+id/tvPasswordERROR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="7dp"
-            android:fontFamily="serif"
-            android:text=""
-            android:textColor="#DF382C"
-            app:layout_constraintBottom_toTopOf="@+id/editText_password"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
-            app:layout_constraintStart_toEndOf="@+id/tv3"
-            app:layout_constraintTop_toBottomOf="@+id/editText_name"
-            app:layout_constraintVertical_bias="0.0" />
-
         <EditText
             android:id="@+id/editText_password"
             android:layout_width="match_parent"
@@ -170,9 +156,9 @@
             android:layout_marginTop="7dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/bg"
+            android:drawableLeft="@drawable/baseline_security_24"
             android:drawablePadding="10dp"
             android:ems="10"
-            android:drawableLeft="@drawable/baseline_security_24"
             android:hint="Придумайте пароль"
             android:inputType="textPersonName"
             android:padding="15sp"
@@ -184,57 +170,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv3" />
 
 
-        <TextView
-            android:id="@+id/tv4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:fontFamily="serif"
-            android:text="Подтвердите"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.128"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_password" />
-
-        <TextView
-            android:id="@+id/tvPasswordReturnERROR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:layout_marginBottom="7dp"
-            android:text=""
-            android:textColor="#df382c"
-            android:textSize="12dp"
-            app:layout_constraintBottom_toTopOf="@+id/editText_return_password"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
-            app:layout_constraintStart_toEndOf="@+id/tv4"
-            app:layout_constraintTop_toBottomOf="@+id/editText_password"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <EditText
-            android:id="@+id/editText_return_password"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/bg"
-            android:drawablePadding="10dp"
-            android:ems="10"
-            android:drawableLeft="@drawable/baseline_security_24"
-            android:hint="Повторите пароль"
-            android:inputType="textPersonName"
-            android:padding="15sp"
-            android:text="30032006"
-            android:textColor="#7E7E9A"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv4" />
-
-
         <CheckBox
             android:id="@+id/checkBox"
             android:layout_width="261dp"
@@ -242,13 +177,13 @@
             android:layout_marginHorizontal="5dp"
             android:layout_marginTop="6dp"
 
+            android:checked="true"
             android:text="Даю согласие на обработку персональных данных"
             android:textColorLink="#4540F7"
             android:textSize="15dp"
-            android:checked="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_return_password" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_password" />
 
         <Button
             android:id="@+id/btRegisterEnd"
