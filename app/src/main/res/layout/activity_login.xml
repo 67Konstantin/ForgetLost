@@ -72,6 +72,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/bg"
             android:ems="10"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬ.-_1234567890 "
             android:hint="user@gmail.com"
             android:inputType="textPersonName"
             android:padding="15sp"
