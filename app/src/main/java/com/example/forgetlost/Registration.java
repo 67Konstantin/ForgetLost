@@ -21,10 +21,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class Registration extends AppCompatActivity {
     EditText etEmail, etPassword, etname, etUserName;
@@ -33,7 +38,6 @@ public class Registration extends AppCompatActivity {
     Vibrator vibrator;
     int mls = 100;
     FirebaseDatabase database;
-    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,19 +88,8 @@ public class Registration extends AppCompatActivity {
                         if (!etPassword.getText().toString().matches("(.*) (.*)")) {
                             etPassword.setError(null);
                             if (checkBox.isChecked()) {
+                                checkUserName();
 
-                                database = FirebaseDatabase.getInstance();
-                                reference = database.getReference("users");
-
-                                String email = etEmail.getText().toString();
-                                String name = etname.getText().toString();
-                                String password = etPassword.getText().toString();
-                                String userName = etUserName.getText().toString();
-                                HelperClass helperClass = new HelperClass(email, name, password, userName);
-
-                                reference.child(userName).setValue(helperClass);
-
-                                startActivity(new Intent(Registration.this, List.class));
 
                             } else {
                                 Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
@@ -134,5 +127,74 @@ public class Registration extends AppCompatActivity {
         }
     }
 
+    public void checkUserEmail() {
+        String email = etEmail.getText().toString();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user");
+        Query checkUserDatabase = reference.orderByChild("email").equalTo(email);
 
+        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists()) {
+                    etUserName.setError("Пользователь с такой почтой уже существует");
+                    etUserName.requestFocus();
+
+                } else {
+
+                    database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference;
+                    reference = database.getReference("users");
+
+                    String email = etEmail.getText().toString();
+                    String name = etname.getText().toString();
+                    String password = etPassword.getText().toString();
+                    String userName = etUserName.getText().toString();
+
+
+                    HelperClass helperClass = new HelperClass(email, name, password, userName);
+
+                    reference.child(userName).setValue(helperClass);
+                    etUserName.setError(null);
+                    startActivity(new Intent(Registration.this, List.class));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    public void checkUserName() {
+        String username = etUserName.getText().toString().trim();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+        Query checkUserDatabase = reference.orderByChild("userName").equalTo(username);
+
+
+        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists()) {
+                    etUserName.setError("Пользователь с таким Никнеймом уже существует");
+                    etUserName.requestFocus();
+
+                } else {
+
+                    checkUserEmail();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }

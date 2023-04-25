@@ -1,7 +1,6 @@
 package com.example.forgetlost;
 
 import android.content.Intent;
-import android.net.IpSecAlgorithm;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,10 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
-
 public class Login extends AppCompatActivity {
-    EditText loginUserEmail, loginPasswod;
+    EditText loginUserName, loginPasswod;
     Button btLoginEnd;
     TextView tvPasswordERROR_login, tvEmailERROR_login;
 
@@ -31,7 +28,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         {
-            loginUserEmail = findViewById(R.id.editText_gmail_login);
+            loginUserName = findViewById(R.id.editText_userName_login);
             loginPasswod = findViewById(R.id.et_password_login);
             btLoginEnd = findViewById(R.id.btLoginEnd);
             tvPasswordERROR_login = findViewById(R.id.tvPasswordERROR_login);
@@ -45,7 +42,7 @@ public class Login extends AppCompatActivity {
 
 
     public boolean validateEmail() {
-        String val = loginUserEmail.getText().toString();
+        String val = loginUserName.getText().toString();
         if (val.isEmpty()) {
             loginPasswod.setError("Неверно введена почта");
             return true;
@@ -67,7 +64,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void checkUser() {
-        String username = loginUserEmail.getText().toString().trim();
+        String username = loginUserName.getText().toString().trim();
         String userPassword = loginPasswod.getText().toString().trim();
 
         Toast.makeText(Login.this, "Окей", Toast.LENGTH_SHORT).show();
@@ -80,20 +77,20 @@ public class Login extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if (snapshot.exists()) {
-                    loginUserEmail.setError(null);
+                    loginUserName.setError(null);
                     String passwordFromDB = snapshot.child(username).child("password").getValue(String.class);
 
                     if (passwordFromDB.equals(userPassword)) {
-                        loginUserEmail.setError(null);
+                        loginUserName.setError(null);
                         startActivity(new Intent(Login.this, List.class));
                         Toast.makeText(Login.this, "Всё получилось", Toast.LENGTH_SHORT).show();
                     } else {
                         loginPasswod.setError("Неверный пароль");
-                        loginUserEmail.requestFocus();
+                        loginUserName.requestFocus();
                     }
                 } else {
-                    loginUserEmail.setError("Пользователя с такой почтой не существует");
-                    loginUserEmail.requestFocus();
+                    loginUserName.setError("Пользователя с таким Никнеймом не существует");
+                    loginUserName.requestFocus();
                 }
             }
 
