@@ -99,6 +99,7 @@ public class Registration extends AppCompatActivity {
                                 HelperClass helperClass = new HelperClass(email, name, password);
 
                                 reference.child(name).setValue(helperClass);
+
                                 Toast.makeText(this, "бобра", Toast.LENGTH_SHORT).show();
 
                                 startActivity(new Intent(Registration.this, List.class));

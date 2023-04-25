@@ -3,13 +3,13 @@ package com.example.forgetlost;
 public class HelperClass {
     String email, name, password;
 
+    public HelperClass() {
+    }
+
     public HelperClass(String email, String name, String password) {
         this.email = email;
         this.name = name;
         this.password = password;
-    }
-
-    public HelperClass() {
     }
 
     public String getEmail() {
