@@ -104,7 +104,7 @@
             android:layout_marginTop="36dp"
             android:backgroundTint="#4D4EFF"
             android:fontFamily="sans-serif"
-            android:onClick="RegClick"
+            android:onClick="LogClick"
             android:padding="15dp"
             android:text="ВОЙТИ"
             android:textColor="@color/white"

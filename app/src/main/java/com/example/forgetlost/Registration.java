@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -49,7 +50,6 @@ public class Registration extends AppCompatActivity {
     FirebaseUser user;
     View layer1;
     int x = 0;
-    Intent intent = new Intent(Registration.this, List.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +89,8 @@ public class Registration extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseAuth.getInstance().signOut();
-        if (firebaseAuth.getCurrentUser() != null){
-            startActivity(intent);
+        if (firebaseAuth.getCurrentUser() != null) {
+            startActivity(new Intent(Registration.this, List.class));
         }
     }
 
@@ -102,76 +102,70 @@ public class Registration extends AppCompatActivity {
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
-            if (checkEmail(etEmail)) {
-                etEmail.setError(null);
-                if (etname.getText().toString().length() != 0) {
-                    etname.setError(null);
-                    if (password.length() >= 8) {
+        if (checkEmail(etEmail)) {
+            etEmail.setError(null);
+            if (etname.getText().toString().length() != 0) {
+                etname.setError(null);
+                if (password.length() >= 8) {
+                    etPassword.setError(null);
+                    if (!password.matches("(.*) (.*)")) {
                         etPassword.setError(null);
-                        if (!password.matches("(.*) (.*)")) {
-                            etPassword.setError(null);
-                            if (checkBox.isChecked()) {
-                                if (x == 0) {
-                                    linearLayout.addView(layer1);
-                                    setMargins(tv2, 18, 300, 18, 10);
+                        if (checkBox.isChecked()) {
+//
+//                            linearLayout.addView(layer1);
+//                            setMargins(tv2, 18, 270, 18, 10);
 
 
-                                   } else if (x==1) {
+                            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(Registration.this, "Пользователь с этой почтой уже существует и вы ввели правильный пароль", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(Registration.this, List.class));
+                                    } else {
+                                        Toast.makeText(Registration.this, "Пользователь с этой почтой уже существует", Toast.LENGTH_SHORT).show();
 
-
-
-
-                                } else if (x == 2) {
-
-
-                                    firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (task.isSuccessful()) {
-                                                // User signed in successfully
-                                                Toast.makeText(Registration.this, "Пользователь с этой почтой уже существует и вы ввели правильный пароль", Toast.LENGTH_SHORT).show();
-                                                startActivity(intent);
+                                                Toast.makeText(Registration.this, "Пользователь добавлен", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(Registration.this, List.class));
                                             }
                                         }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Toast.makeText(Registration.this, "Пользователь добавлен", Toast.LENGTH_SHORT).show();
-                                                        startActivity(intent);
-                                                    }
-                                                }
-                                            });
-                                        }
                                     });
-
-                                } else {
-                                    Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-                                    checkBox.setAnimation(shake);
-                                    checkBox.setDrawingCacheBackgroundColor(Color.RED);
-                                    vibrator.vibrate(mls);
                                 }
-                            } else {
-                                etPassword.setError("Пароль не должен содержать пробелы");
-                                vibrator.vibrate(mls);
-                            }
+                            });
+
                         } else {
-                            etPassword.setError("Пароль должен содержать не менее 8 символов");
+                            Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+                            checkBox.setAnimation(shake);
+                            checkBox.setDrawingCacheBackgroundColor(Color.RED);
                             vibrator.vibrate(mls);
                         }
                     } else {
-                        etname.setError("Вы не ввели имя");
+                        etPassword.setError("Пароль не должен содержать пробелы");
                         vibrator.vibrate(mls);
                     }
                 } else {
-                    etEmail.setError("Некорректно введена почта ");
+                    etPassword.setError("Пароль должен содержать не менее 8 символов");
                     vibrator.vibrate(mls);
                 }
+            } else {
+                etname.setError("Вы не ввели имя");
+                vibrator.vibrate(mls);
             }
+        } else {
+            etEmail.setError("Некорректно введена почта ");
+            vibrator.vibrate(mls);
         }
+    }
+
 
     boolean checkEmail(EditText email) {
         String emailSt = email.getText().toString();
