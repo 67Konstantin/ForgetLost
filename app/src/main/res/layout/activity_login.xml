@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#9b98fd"
+    android:gravity="center|center_horizontal|center_vertical"
     tools:context=".Login">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="80dp"
         android:background="@drawable/bg_stroke"
         android:elevation="30dp"
         android:orientation="vertical">
@@ -45,37 +45,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
-        <TextView
-            android:id="@+id/tvEmailERROR_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="serif"
-            android:onClick="LogInClick"
-            android:text=""
-            android:textColor="#DF382C"
-            android:textSize="12dp"
-            app:layout_constraintBottom_toTopOf="@+id/editText_gmail_login"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
-            app:layout_constraintStart_toEndOf="@+id/tv1"
-            app:layout_constraintTop_toBottomOf="@+id/textView1"
-            app:layout_constraintVertical_bias="1.0" />
-
         <EditText
-            android:text="Константин"
-            android:id="@+id/editText_userName_login"
+            android:id="@+id/editText_gmail_login"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/bg"
             android:ems="10"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬ.-_1234567890 "
             android:hint="user@gmail.com"
             android:inputType="textPersonName"
             android:padding="15sp"
+            android:text="pilmeshok@gmail.com"
             android:textColor="#7E7E9A"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,25 +75,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.073"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_userName_login" />
-
-        <TextView
-            android:id="@+id/tvPasswordERROR_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="54dp"
-            android:layout_marginBottom="17dp"
-            android:fontFamily="serif"
-            android:text=""
-            android:textColor="#DF382C"
-            android:textSize="12dp"
-            app:layout_constraintBottom_toTopOf="@+id/et_password_login"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
-            app:layout_constraintStart_toEndOf="@+id/tv3"
-            app:layout_constraintTop_toBottomOf="@+id/editText_userName_login"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_gmail_login" />
 
         <EditText
             android:text="30032006"
@@ -137,7 +101,7 @@
             android:id="@+id/btLoginEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="36dp"
             android:backgroundTint="#4D4EFF"
             android:fontFamily="sans-serif"
             android:onClick="RegClick"
@@ -161,8 +125,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btLoginEnd"
             app:layout_constraintVertical_bias="0.971"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="10dp"
+
             tools:ignore="MissingConstraints" />
 
 

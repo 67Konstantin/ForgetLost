@@ -33,18 +33,6 @@
             app:layout_constraintVertical_bias="0.029"
             tools:ignore="MissingConstraints" />
 
-        <TextView
-            android:id="@+id/tv0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:fontFamily="serif"
-            android:text="Никнейм в приложении"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView1" />
-
 
         <EditText
             android:id="@+id/editText_gmail"
@@ -77,49 +65,39 @@
             android:fontFamily="serif"
             android:text="Почта"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintHorizontal_bias="0.078"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_nickname" />
+            app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
-        <EditText
-            android:id="@+id/editText_nickname"
+        <LinearLayout
+            android:id="@+id/lineal"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="7dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/bg"
-            android:drawableLeft="@drawable/baseline_perm_identity_24"
-            android:drawablePadding="10dp"
-            android:ems="10"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬ.-_1234567890 "
-            android:hint="user@email.com"
-            android:inputType="textPersonName"
-            android:padding="15sp"
-            android:text="pilmeshok"
-            android:textColor="#7E7E9A"
-            android:textSize="15sp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintHorizontal_bias="0.073"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv0" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_gmail"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
             android:fontFamily="serif"
             android:text="Имя"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_gmail" />
+            app:layout_constraintTop_toTopOf="@+id/lineal" />
 
         <EditText
             android:id="@+id/editText_name"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="47dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="7dp"
             android:layout_marginRight="20dp"

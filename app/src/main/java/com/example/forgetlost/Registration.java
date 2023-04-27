@@ -12,32 +12,44 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 public class Registration extends AppCompatActivity {
-    EditText etEmail, etPassword, etname, etUserName;
+    LinearLayout linearLayout;
+    TextView tv2;
+    EditText etEmail, etPassword, etname;
+    EditText codeNum1, codeNum2, codeNum3, codeNum4;
     Button btReg;
     CheckBox checkBox;
     Vibrator vibrator;
-    int mls = 100;
-    FirebaseDatabase database;
+    int mls = 100, code;
+    FirebaseFirestore firestore;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    View layer1;
+    int x = 0;
+    Intent intent = new Intent(Registration.this, List.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +57,16 @@ public class Registration extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         {
             etEmail = findViewById(R.id.editText_gmail);
-            etUserName = findViewById(R.id.editText_nickname);
             etname = findViewById(R.id.editText_name);
             etPassword = findViewById(R.id.editText_password);
             checkBox = findViewById(R.id.checkBox);
             btReg = findViewById(R.id.btRegisterEnd);
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            linearLayout = findViewById(R.id.lineal);
+            tv2 = findViewById(R.id.tv2);
+
+            LayoutInflater inflater = getLayoutInflater();
+            layer1 = inflater.inflate(R.layout.layer1, null);
         }
         SpannableString ss = new SpannableString("Даю согласие на обработку \n " + "  " + "персональных данных");
         ClickableSpan clickableSpan = new ClickableSpan() {
@@ -69,6 +85,13 @@ public class Registration extends AppCompatActivity {
         checkBox.setText(ss);
         checkBox.setMovementMethod(LinkMovementMethod.getInstance());
         checkBox.setHighlightColor(Color.TRANSPARENT);
+
+        firestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth.getInstance().signOut();
+        if (firebaseAuth.getCurrentUser() != null){
+            startActivity(intent);
+        }
     }
 
     public void SingInGoogle(View view) {
@@ -76,49 +99,81 @@ public class Registration extends AppCompatActivity {
     }
 
     public void RegClick(View view) {
-        if (etUserName.getText().toString().length() != 0) {
-            etUserName.setError(null);
+        String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
 
             if (checkEmail(etEmail)) {
                 etEmail.setError(null);
                 if (etname.getText().toString().length() != 0) {
                     etname.setError(null);
-                    if (etPassword.getText().toString().length() >= 8) {
+                    if (password.length() >= 8) {
                         etPassword.setError(null);
-                        if (!etPassword.getText().toString().matches("(.*) (.*)")) {
+                        if (!password.matches("(.*) (.*)")) {
                             etPassword.setError(null);
                             if (checkBox.isChecked()) {
-                                checkUserName();
+                                if (x == 0) {
+                                    linearLayout.addView(layer1);
+                                    setMargins(tv2, 18, 300, 18, 10);
 
 
+                                   } else if (x==1) {
+
+
+
+
+                                } else if (x == 2) {
+
+
+                                    firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                // User signed in successfully
+                                                Toast.makeText(Registration.this, "Пользователь с этой почтой уже существует и вы ввели правильный пароль", Toast.LENGTH_SHORT).show();
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(Registration.this, "Пользователь добавлен", Toast.LENGTH_SHORT).show();
+                                                        startActivity(intent);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+
+                                } else {
+                                    Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+                                    checkBox.setAnimation(shake);
+                                    checkBox.setDrawingCacheBackgroundColor(Color.RED);
+                                    vibrator.vibrate(mls);
+                                }
                             } else {
-                                Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-                                checkBox.setAnimation(shake);
-                                checkBox.setDrawingCacheBackgroundColor(Color.RED);
+                                etPassword.setError("Пароль не должен содержать пробелы");
                                 vibrator.vibrate(mls);
                             }
                         } else {
-                            etPassword.setError("Пароль не должен содержать пробелы");
+                            etPassword.setError("Пароль должен содержать не менее 8 символов");
                             vibrator.vibrate(mls);
                         }
                     } else {
-                        etPassword.setError("Пароль должен содержать не менее 8 символов");
+                        etname.setError("Вы не ввели имя");
                         vibrator.vibrate(mls);
                     }
                 } else {
-                    etname.setError("Вы не ввели имя");
+                    etEmail.setError("Некорректно введена почта ");
                     vibrator.vibrate(mls);
                 }
-            } else {
-                etEmail.setError("Некорректно введена почта ");
-                vibrator.vibrate(mls);
             }
-        } else {
-            etUserName.setError("Ваш никнейм не может быть пустым");
         }
-    }
 
-    static boolean checkEmail(EditText email) {
+    boolean checkEmail(EditText email) {
         String emailSt = email.getText().toString();
         if (!emailSt.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailSt).matches()) {
             return true;
@@ -127,74 +182,11 @@ public class Registration extends AppCompatActivity {
         }
     }
 
-    public void checkUserEmail() {
-        String email = etEmail.getText().toString();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user");
-        Query checkUserDatabase = reference.orderByChild("email").equalTo(email);
-
-        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.exists()) {
-                    etUserName.setError("Пользователь с такой почтой уже существует");
-                    etUserName.requestFocus();
-
-                } else {
-
-                    database = FirebaseDatabase.getInstance();
-                    DatabaseReference reference;
-                    reference = database.getReference("users");
-
-                    String email = etEmail.getText().toString();
-                    String name = etname.getText().toString();
-                    String password = etPassword.getText().toString();
-                    String userName = etUserName.getText().toString();
-
-
-                    HelperClass helperClass = new HelperClass(email, name, password, userName);
-
-                    reference.child(userName).setValue(helperClass);
-                    etUserName.setError(null);
-                    startActivity(new Intent(Registration.this, List.class));
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-
-    public void checkUserName() {
-        String username = etUserName.getText().toString().trim();
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
-        Query checkUserDatabase = reference.orderByChild("userName").equalTo(username);
-
-
-        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.exists()) {
-                    etUserName.setError("Пользователь с таким Никнеймом уже существует");
-                    etUserName.requestFocus();
-
-                } else {
-
-                    checkUserEmail();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+    private void setMargins(View view, int left, int top, int right, int bottom) {
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            p.setMargins(left, top, right, bottom);
+            view.requestLayout();
+        }
     }
 }

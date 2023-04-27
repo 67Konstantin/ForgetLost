@@ -2,6 +2,7 @@ package com.example.forgetlost;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,29 +12,36 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Login extends AppCompatActivity {
-    EditText loginUserName, loginPasswod;
+    FirebaseFirestore firestore;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    EditText loginUserEmail, loginPassword;
     Button btLoginEnd;
-    TextView tvPasswordERROR_login, tvEmailERROR_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         {
-            loginUserName = findViewById(R.id.editText_userName_login);
-            loginPasswod = findViewById(R.id.et_password_login);
+            loginUserEmail = findViewById(R.id.editText_gmail_login);
+            loginPassword = findViewById(R.id.et_password_login);
             btLoginEnd = findViewById(R.id.btLoginEnd);
-            tvPasswordERROR_login = findViewById(R.id.tvPasswordERROR_login);
-            tvEmailERROR_login = findViewById(R.id.tvEmailERROR_login);
         }
+
+        firestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth.getInstance().signOut();
     }
 
     public void GoToReg(View view) {
@@ -41,31 +49,20 @@ public class Login extends AppCompatActivity {
     }
 
 
-    public boolean validateEmail() {
-        String val = loginUserName.getText().toString();
-        if (val.isEmpty()) {
-            loginPasswod.setError("Неверно введена почта");
-            return true;
-        } else {
-            loginPasswod.setError(null);
-            return false;
-        }
-    }
-
     public boolean validatePassword() {
-        String val = loginPasswod.getText().toString();
+        String val = loginPassword.getText().toString();
         if (val.isEmpty()) {
-            loginPasswod.setError("Поле ввода не может быть пустым");
+            loginPassword.setError("Поле ввода не может быть пустым");
             return false;
         } else {
-            loginPasswod.setError(null);
+            loginPassword.setError(null);
             return true;
         }
     }
 
     public void checkUser() {
-        String username = loginUserName.getText().toString().trim();
-        String userPassword = loginPasswod.getText().toString().trim();
+        String username = loginUserEmail.getText().toString().trim();
+        String userPassword = loginPassword.getText().toString().trim();
 
         Toast.makeText(Login.this, "Окей", Toast.LENGTH_SHORT).show();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
@@ -77,20 +74,20 @@ public class Login extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if (snapshot.exists()) {
-                    loginUserName.setError(null);
+                    loginUserEmail.setError(null);
                     String passwordFromDB = snapshot.child(username).child("password").getValue(String.class);
 
                     if (passwordFromDB.equals(userPassword)) {
-                        loginUserName.setError(null);
+                        loginUserEmail.setError(null);
                         startActivity(new Intent(Login.this, List.class));
                         Toast.makeText(Login.this, "Всё получилось", Toast.LENGTH_SHORT).show();
                     } else {
-                        loginPasswod.setError("Неверный пароль");
-                        loginUserName.requestFocus();
+                        loginPassword.setError("Неверный пароль");
+                        loginUserEmail.requestFocus();
                     }
                 } else {
-                    loginUserName.setError("Пользователя с таким Никнеймом не существует");
-                    loginUserName.requestFocus();
+                    loginUserEmail.setError("Пользователя с такой почтой не существует");
+                    loginUserEmail.requestFocus();
                 }
             }
 
@@ -102,8 +99,26 @@ public class Login extends AppCompatActivity {
     }
 
     public void RegClick(View view) {
-        if (!(validateEmail() && validatePassword())) {
-            checkUser();
+        if (checkEmail(loginUserEmail)) {
+            if (loginPassword.getText().toString().length() >=8) {
+                Toast.makeText(this, "Привет", Toast.LENGTH_SHORT).show();
+
+
+            } else {
+                loginPassword.setError("Пароль содержит не менее 8 символов");
+            }
+        } else {
+            loginUserEmail.setError("Неверно введена почта");
+        }
+
+    }
+
+    boolean checkEmail(EditText email) {
+        String emailSt = email.getText().toString();
+        if (!emailSt.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailSt).matches()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
