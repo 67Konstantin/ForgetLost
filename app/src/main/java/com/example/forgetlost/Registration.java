@@ -94,24 +94,7 @@ public class Registration extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null) {
             startActivity(new Intent(Registration.this, List.class));
         }
-        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo == null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
-            Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.alert_dialog);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().getAttributes().windowAnimations = android.R.style.Animation_Dialog;
-            Button btTryAgain = dialog.findViewById(R.id.btTryAgain);
-            btTryAgain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    recreate();
-                }
-            });
-            dialog.show();
-        }
+        List.dialogShow(this);
     }
 
     public void SingInGoogle(View view) {

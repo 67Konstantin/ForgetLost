@@ -27,7 +27,7 @@ public class Verification extends AppCompatActivity {
         btSend = findViewById(R.id.btSendEmail);
         btCheck = findViewById(R.id.btCheckVerification);
         btLogOut = findViewById(R.id.btLogOut);
-
+        List.dialogShow(this);
         Toast.makeText(this, FirebaseAuth.getInstance().getUid(), Toast.LENGTH_SHORT).show();
     }
     public void LogOut(View view) {

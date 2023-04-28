@@ -38,10 +38,23 @@ public class List extends AppCompatActivity {
         if (!user.isEmailVerified()){
             startActivity(new Intent(List.this, Verification.class));
         }
-        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        dialogShow(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    public void Click(View view) {
+        startActivity(new Intent(List.this, Registration.class));
+        FirebaseAuth.getInstance().signOut();
+    }
+    public static void dialogShow(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
-            Dialog dialog = new Dialog(this);
+            Dialog dialog = new Dialog(context);
             dialog.setContentView(R.layout.alert_dialog);
             dialog.setCanceledOnTouchOutside(false);
             dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -53,18 +66,13 @@ public class List extends AppCompatActivity {
                 public void onClick(View view) {
                     recreate();
                 }
+                public void recreate() {
+                    throw new RuntimeException("Stub!");
+                }
+
+
             });
             dialog.show();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    public void Click(View view) {
-        startActivity(new Intent(List.this, Registration.class));
-        FirebaseAuth.getInstance().signOut();
     }
 }
