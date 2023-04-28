@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/bg_blue_disactive_bt">
+
+    <ImageView
+        android:layout_width="213dp"
+        android:layout_height="246dp"
+        android:src="@drawable/no_internet" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:text="Оооой... "
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Кажется подключение\n к интернету отсутствует"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_marginTop="30dp"
+        android:fontFamily="serif"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btTryAgain"
+        android:text="Попробовать снова"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"/>
+
+</LinearLayout>
