@@ -1,16 +1,15 @@
 package com.example.forgetlost;
 
 public class HelperClass {
-    String email, name, password, userName;
+    String email, name, uid;
 
     public HelperClass() {
     }
 
-    public HelperClass(String email, String name, String password, String userName) {
+    public HelperClass(String email, String name, String uid) {
         this.email = email;
         this.name = name;
-        this.password = password;
-        this.userName = userName;
+        this.uid = uid;
     }
 
     public String getEmail() {
@@ -29,19 +28,12 @@ public class HelperClass {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUid() {
+        return uid;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUid(String password) {
+        this.uid = password;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 }

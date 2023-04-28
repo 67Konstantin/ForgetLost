@@ -32,7 +32,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -40,16 +40,15 @@ public class Registration extends AppCompatActivity {
     LinearLayout linearLayout;
     TextView tv2;
     EditText etEmail, etPassword, etname;
-    EditText codeNum1, codeNum2, codeNum3, codeNum4;
     Button btReg;
     CheckBox checkBox;
     Vibrator vibrator;
-    int mls = 100, code;
+    int mls = 100, x = 0;
     FirebaseFirestore firestore;
     FirebaseAuth firebaseAuth;
-    FirebaseUser user;
+    DatabaseReference reference;
+    String uid;
     View layer1;
-    int x = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,6 @@ public class Registration extends AppCompatActivity {
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             linearLayout = findViewById(R.id.lineal);
             tv2 = findViewById(R.id.tv2);
-
             LayoutInflater inflater = getLayoutInflater();
             layer1 = inflater.inflate(R.layout.layer1, null);
         }
@@ -111,58 +109,84 @@ public class Registration extends AppCompatActivity {
                     if (!password.matches("(.*) (.*)")) {
                         etPassword.setError(null);
                         if (checkBox.isChecked()) {
-//
-//                            linearLayout.addView(layer1);
-//                            setMargins(tv2, 18, 270, 18, 10);
+                            if (x == 0) {
+                                linearLayout.addView(layer1);
+                                setMargins(tv2, 18, 300, 18, 10);
 
 
-                            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(Registration.this, "Пользователь с этой почтой уже существует и вы ввели правильный пароль", Toast.LENGTH_SHORT).show();
+                                firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(Registration.this, "Пользователь с этой почтой уже существует и вы ввели правильный пароль", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(Registration.this, List.class));
+                                        }
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+
+                                        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Toast.makeText(Registration.this, "Письмо было отправлено на вашу почту", Toast.LENGTH_SHORT).show();
+                                                                btReg.setText("Проверить Верификацию");
+                                                                x = 1;
+                                                            } else {
+                                                                Toast.makeText(Registration.this, "Не удалось отправить письмо", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
+                                                } else {
+                                                    Toast.makeText(Registration.this, "Пользователь с этой почтой уже зарегестрирован", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            } else if (x == 1) {
+                                FirebaseAuth.getInstance().getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(Registration.this, "Вы успешно подтвердили почту", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(Registration.this, List.class));
-                                    } else {
-                                        Toast.makeText(Registration.this, "Пользователь с этой почтой уже существует", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(Registration.this, "Вы не подтвердили почту", Toast.LENGTH_SHORT).show();
 
                                     }
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(Registration.this, "Пользователь добавлен", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(Registration.this, List.class));
-                                            }
-                                        }
-                                    });
-                                }
-                            });
+                                });
 
+                            } else {
+                                Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+                                checkBox.setAnimation(shake);
+                                checkBox.setDrawingCacheBackgroundColor(Color.RED);
+                                vibrator.vibrate(mls);
+                            }
                         } else {
-                            Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-                            checkBox.setAnimation(shake);
-                            checkBox.setDrawingCacheBackgroundColor(Color.RED);
+                            etPassword.setError("Пароль не должен содержать пробелы");
                             vibrator.vibrate(mls);
                         }
                     } else {
-                        etPassword.setError("Пароль не должен содержать пробелы");
+                        etPassword.setError("Пароль должен содержать не менее 8 символов");
                         vibrator.vibrate(mls);
                     }
                 } else {
-                    etPassword.setError("Пароль должен содержать не менее 8 символов");
+                    etname.setError("Вы не ввели имя");
                     vibrator.vibrate(mls);
                 }
             } else {
-                etname.setError("Вы не ввели имя");
+                etEmail.setError("Некорректно введена почта ");
                 vibrator.vibrate(mls);
             }
-        } else {
-            etEmail.setError("Некорректно введена почта ");
-            vibrator.vibrate(mls);
         }
     }
 
@@ -183,4 +207,54 @@ public class Registration extends AppCompatActivity {
             view.requestLayout();
         }
     }
+}
+
+class TimeClass extends Thread {
+    private boolean isWork;
+
+    private TimeClass() {
+        isWork = true;
+    }
+
+    @Override
+    public void run() {
+        int time = 59;
+        while (time >= 0 && isWork) {
+
+            int finalTime = time;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    FirebaseAuth.getInstance().getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+
+                        }
+                    });
+                }
+            });
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            time--;
+            if (time == 1) {
+                //если время кончилось, то отправляем код еще раз
+                //отправим запрос на почту для получения кода и обнулим счетчик
+
+
+                //
+                time = 59;
+            }
+        }
+
+
+    }
+
+    public void runOnUiThread(Runnable action) {
+        throw new RuntimeException("Stub!");
+    }
+
 }

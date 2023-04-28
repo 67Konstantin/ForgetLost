@@ -15,10 +15,17 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class List extends AppCompatActivity {
 
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_activty);
+        FirebaseAuth.getInstance();
+
+        if (!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+            startActivity(new Intent(List.this, Verification.class));
+        }
     }
 
     @Override
