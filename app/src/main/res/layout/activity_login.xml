@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9b98fd"
+    android:background="@color/purple"
     android:gravity="center|center_horizontal|center_vertical"
     tools:context=".Login">
 
@@ -54,6 +54,8 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/bg"
             android:ems="10"
+            android:drawableLeft="@drawable/ic_baseline_person_pin_24"
+            android:drawablePadding="10dp"
             android:hint="user@gmail.com"
             android:inputType="textPersonName"
             android:padding="15sp"
@@ -87,6 +89,8 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/bg"
             android:ems="10"
+            android:drawableLeft="@drawable/baseline_security_24"
+            android:drawablePadding="10dp"
             android:hint="Введите ваш пароль"
             android:inputType="textPersonName"
             android:padding="15sp"
