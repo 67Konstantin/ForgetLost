@@ -55,6 +55,32 @@ public class Registration extends AppCompatActivity {
     View layer1;
     String uid, password;
 
+    static void dialogShow(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
+            Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.alert_dialog);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            Button bt = dialog.findViewById(R.id.btTryAgain);
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    throw new RuntimeException("Stub!");
+                }
+            });
+            dialog.show();
+        } else {
+
+
+        }
+
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +97,7 @@ public class Registration extends AppCompatActivity {
             tv2 = findViewById(R.id.tv2);
             LayoutInflater inflater = getLayoutInflater();
             layer1 = inflater.inflate(R.layout.layer1, null);
+
         }
         SpannableString ss = new SpannableString("Даю согласие на обработку \n " + "  " + "персональных данных");
         ClickableSpan clickableSpan = new ClickableSpan() {
@@ -94,7 +121,7 @@ public class Registration extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null) {
             startActivity(new Intent(Registration.this, List.class));
         }
-        List.dialogShow(this);
+        dialogShow(this);
     }
 
     public void SingInGoogle(View view) {
@@ -137,7 +164,7 @@ public class Registration extends AppCompatActivity {
                                                         dataBase = FirebaseDatabase.getInstance();
                                                         reference = dataBase.getReference("users");
                                                         uid = FirebaseAuth.getInstance().getUid();
-                                                        HelperClass helperClass = new HelperClass(email,name,uid);
+                                                        HelperClass helperClass = new HelperClass(email, name, uid);
                                                         reference.child(uid).setValue(helperClass);
                                                         FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
@@ -185,9 +212,9 @@ public class Registration extends AppCompatActivity {
             FirebaseAuth.getInstance().getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
-                    Toast.makeText(Registration.this, "Вы успешно подтвердили почту", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Registration.this, List.class));
+                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                        Toast.makeText(Registration.this, "Вы успешно подтвердили почту", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Registration.this, List.class));
                     } else {
                         Toast.makeText(Registration.this, "Вы не подтвердили почту", Toast.LENGTH_SHORT).show();
                     }

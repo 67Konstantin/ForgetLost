@@ -1,14 +1,14 @@
 package com.example.forgetlost;
 
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,7 +27,7 @@ public class Verification extends AppCompatActivity {
         btSend = findViewById(R.id.btSendEmail);
         btCheck = findViewById(R.id.btCheckVerification);
         btLogOut = findViewById(R.id.btLogOut);
-        List.dialogShow(this);
+        Registration.dialogShow(Verification.this);
         Toast.makeText(this, FirebaseAuth.getInstance().getUid(), Toast.LENGTH_SHORT).show();
     }
     public void LogOut(View view) {
