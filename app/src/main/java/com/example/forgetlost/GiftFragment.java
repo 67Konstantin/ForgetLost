@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 
-public class LibraryFragment extends Fragment {
+public class GiftFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_library, container, false);
+        return inflater.inflate(R.layout.fragment_shorts, container, false);
     }
 }

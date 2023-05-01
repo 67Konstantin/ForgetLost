@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/home"
-        android:title="Home"
+        android:title="Потеряшки"
         android:icon="@drawable/icon_lost_things"/>
 
     <item
         android:id="@+id/shorts"
-        android:title="Shorts"
+        android:title="Даром"
         android:icon="@drawable/icon_gift"
         />
 
@@ -18,11 +18,11 @@
 
     <item
         android:id="@+id/subscriptions"
-        android:title="Subscriptions"
-        android:icon="@drawable/icon_settings" />
+        android:title="Месседжер"
+        android:icon="@drawable/icon_messenger" />
     <item
         android:id="@+id/library"
-        android:title="Library"
+        android:title="Профиль"
         android:icon="@drawable/icon_person" />
 
 </menu>

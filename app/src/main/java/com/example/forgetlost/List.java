@@ -28,23 +28,23 @@ public class List extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityListActivtyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
+        replaceFragment(new LostThingsFragment());
 
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch (item.getItemId()) {
                 case R.id.home:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new LostThingsFragment());
                     break;
                 case R.id.shorts:
-                    replaceFragment(new ShortsFragment());
+                    replaceFragment(new GiftFragment());
                     break;
                 case R.id.subscriptions:
-                    replaceFragment(new SubscriptionFragment());
+                    replaceFragment(new MessageFragment());
                     break;
                 case R.id.library:
-                    replaceFragment(new LibraryFragment());
+                    replaceFragment(new ProfileFragment());
                     break;
             }
 
