@@ -7,12 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="purple">#9b98fd</color>
-    <color name="colorPrimary">#028EFD</color>
-    <color name="colorPrimaryDark">#2196F3</color>
-    <color name="colorAccent">#FB2828</color>
-    <color name="colorPrimaryText">#212121</color>
-    <color name="colorSecondaryText">#757575</color>
-    <color name="colorWhite">#FFFFFF</color>
-    <color name="colorDivider">#ECECEC</color>
+    <color name="purple">#9B98FD</color>
+    <color name="purple_light">#C7C5FB</color>
+    <color name="dark_grey">#838297</color>
 </resources>

@@ -7,13 +7,27 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+
 
 public class LostThingsFragment extends Fragment {
 
+    private FirebaseAuth mAuth;
+    private DatabaseReference mRef;
+
+    FirebaseUser user = mAuth.getInstance().getCurrentUser();
+    FirebaseListAdapter mAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_lost_things,container,false);
+
+
+        return inflater.inflate(R.layout.fragment_lost_things,container,false);
     }
+
 }
