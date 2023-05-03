@@ -164,7 +164,7 @@ public class Registration extends AppCompatActivity {
                                                         dataBase = FirebaseDatabase.getInstance();
                                                         reference = dataBase.getReference("users");
                                                         uid = FirebaseAuth.getInstance().getUid();
-                                                        HelperClass helperClass = new HelperClass(email, name, uid);
+                                                        HelperClassUsers helperClass = new HelperClassUsers(email, name, uid);
                                                         reference.child(uid).setValue(helperClass);
                                                         FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override

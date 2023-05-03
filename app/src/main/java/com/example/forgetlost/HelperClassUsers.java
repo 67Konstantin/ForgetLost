@@ -1,12 +1,12 @@
 package com.example.forgetlost;
 
-public class HelperClass {
+public class HelperClassUsers {
     String email, name, uid;
 
-    public HelperClass() {
+    public HelperClassUsers() {
     }
 
-    public HelperClass(String email, String name, String uid) {
+    public HelperClassUsers(String email, String name, String uid) {
         this.email = email;
         this.name = name;
         this.uid = uid;

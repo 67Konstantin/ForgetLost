@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dialogbg"
@@ -55,12 +56,14 @@
                         android:textSize="18dp" />
 
                     <ImageView
+                        android:id="@+id/photoThing"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/bg_stroke"
-                        android:padding="40dp"
+                        android:cropToPadding="true"
+                        android:padding="1dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/arrow_load" />
                 </LinearLayout>
@@ -68,6 +71,40 @@
 
             </LinearLayout>
 
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg"
+                android:entries="@array/giftOrLost" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/name_thing" />
+
+                <EditText
+                    android:id="@+id/nameThing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/bg"
+                    android:hint="Напишите тут название самой вещи"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_grey"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -129,6 +166,7 @@
                 android:id="@+id/layoutLive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
@@ -143,17 +181,26 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/your_city" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/actv"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="Go live"
-                    android:textColor="@color/purple"
-                    android:textSize="16sp" />
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/bg"
+                    android:completionHint="Выберите вашу область"
+                    android:completionThreshold="1"
+                    android:hint="Выберите вашу область"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_grey"
+                    android:textSize="14sp" />
             </LinearLayout>
+
             <Button
+                android:id="@+id/btPublishNewPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_blue_active_bt"
                 android:text="Опубликовать"/>
         </LinearLayout>
     </ScrollView>

@@ -1,5 +1,6 @@
 package com.example.forgetlost;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,16 +19,19 @@ public class LostThingsFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference mRef;
 
+
     FirebaseUser user = mAuth.getInstance().getCurrentUser();
     FirebaseListAdapter mAdapter;
+
+
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_lost_things, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_lost_things,container,false);
 
-
-        return inflater.inflate(R.layout.fragment_lost_things,container,false);
+        return view;
     }
 
 }
