@@ -34,4 +34,6 @@ public class LostThingsFragment extends Fragment {
         return view;
     }
 
+
+
 }

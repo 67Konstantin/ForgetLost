@@ -8,6 +8,7 @@
 
 
     <ImageView
+        android:id="@+id/dismiss"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
@@ -71,12 +72,31 @@
 
             </LinearLayout>
 
-            <Spinner
-                android:id="@+id/spinner"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg"
-                android:entries="@array/giftOrLost" />
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/nahodka"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/finding" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:textColor="@color/dark_grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/bg"
+                    android:entries="@array/giftOrLost"
+                    android:padding="12dp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,7 +122,7 @@
                     android:padding="20dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -130,7 +150,7 @@
                     android:padding="20dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -150,6 +170,7 @@
                     android:src="@drawable/hand_shake" />
 
                 <EditText
+                    android:id="@+id/conditionsThing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -158,7 +179,7 @@
                     android:padding="20dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -193,7 +214,7 @@
                     android:padding="20dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <Button
@@ -201,7 +222,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_blue_active_bt"
-                android:text="Опубликовать"/>
+                android:text="Опубликовать" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

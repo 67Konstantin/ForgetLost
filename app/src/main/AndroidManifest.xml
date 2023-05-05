@@ -19,7 +19,7 @@
             android:name=".Verification"
             android:exported="false" />
         <activity
-            android:name=".List"
+            android:name=".Registration"
             android:exported="false" />
         <activity
             android:name=".ProgressBar"
@@ -30,7 +30,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Registration"
+            android:name=".List"
             android:exported="true"
             android:screenOrientation="portrait" >
             <intent-filter>

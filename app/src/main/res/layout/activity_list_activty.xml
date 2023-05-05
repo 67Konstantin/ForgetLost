@@ -43,5 +43,7 @@
         app:maxImageSize="40dp"
         android:id="@+id/fab"
         app:tint="@color/purple" />
-
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

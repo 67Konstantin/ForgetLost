@@ -86,6 +86,11 @@ public class Registration extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() != null) {
+            startActivity(new Intent(Registration.this, List.class));
+        }
+        dialogShow(this);
         {
             etEmail = findViewById(R.id.editText_gmail);
             etname = findViewById(R.id.editText_name);
@@ -117,11 +122,8 @@ public class Registration extends AppCompatActivity {
         checkBox.setMovementMethod(LinkMovementMethod.getInstance());
         checkBox.setHighlightColor(Color.TRANSPARENT);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() != null) {
-            startActivity(new Intent(Registration.this, List.class));
-        }
-        dialogShow(this);
+
+
     }
 
     public void SingInGoogle(View view) {
