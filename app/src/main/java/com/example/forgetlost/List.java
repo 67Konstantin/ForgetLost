@@ -248,6 +248,7 @@ public class List extends AppCompatActivity {
         reference.child(spinner1.getSelectedItem().toString()).child(user.getUid()).child(id).setValue(helperClassThings);
         if (filePath != null) {
             ref.putFile(filePath)
+
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
