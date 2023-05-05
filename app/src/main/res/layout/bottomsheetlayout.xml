@@ -89,13 +89,13 @@
 
                 <Spinner
                     android:id="@+id/spinner"
-                    android:textColor="@color/dark_grey"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:background="@drawable/bg"
                     android:entries="@array/giftOrLost"
-                    android:padding="12dp" />
+                    android:padding="12dp"
+                    android:textColor="@color/dark_grey" />
             </LinearLayout>
 
             <LinearLayout
@@ -222,7 +222,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_blue_active_bt"
-                android:text="Опубликовать" />
+                android:text="Опубликовать"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -2,7 +2,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="#F1F1F3"
     android:textSize="16dp"
     android:text="Находка"
     android:textColor="@color/dark_grey">

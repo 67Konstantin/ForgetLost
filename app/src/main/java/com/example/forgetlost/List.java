@@ -3,7 +3,6 @@ package com.example.forgetlost;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -11,11 +10,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -33,23 +33,39 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.forgetlost.databinding.ActivityListActivtyBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.UUID;
 
 public class List extends AppCompatActivity {
     ImageView photoThing;
     ActivityListActivtyBinding binding;
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
-    private Uri imageUri;
+    private Uri filePath;
     FirebaseAuth firebaseAuth;
 
     FirebaseDatabase dataBase;
-    DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("things");
-    StorageReference reference = FirebaseStorage.getInstance().getReference();
+    DatabaseReference reference;
+    StorageReference storageReference;
+    FirebaseStorage storage;
+    FirebaseUser user;
+    String[] areas;
+    AutoCompleteTextView autoCompleteTextView;
+    Button btPublishNewPost;
+    Spinner spinner1;
 
     String uid;
 
@@ -57,6 +73,9 @@ public class List extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseAuth.getCurrentUser() == null) {
             startActivity(new Intent(List.this, Registration.class));
         }
@@ -102,28 +121,53 @@ public class List extends AppCompatActivity {
 
     private void showBottomDialog() {
         final Dialog dialog = new Dialog(this);
-        Spinner spinner = dialog.findViewById(R.id.spinner);
-
-//        ArrayAdapter adapter1 = ArrayAdapter.createFromResource(this,R.array.areas,R.layout.color_spiner);
-//        spinner.setAdapter(adapter1);
-
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
-        String[] areas = getResources().getStringArray(R.array.areas);
-        AutoCompleteTextView autoCompleteTextView = dialog.findViewById(R.id.actv);
-        Button btPublishNewPost = dialog.findViewById(R.id.btPublishNewPost);
-
+        areas = getResources().getStringArray(R.array.areas);
+        autoCompleteTextView = dialog.findViewById(R.id.actv);
+        btPublishNewPost = dialog.findViewById(R.id.btPublishNewPost);
+        ImageView dismiss = dialog.findViewById(R.id.dismiss);
         ImageView nahodka = dialog.findViewById(R.id.nahodka);
         ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, areas);
         autoCompleteTextView.setAdapter(adapter);
         photoThing = dialog.findViewById(R.id.photoThing);
-        ImageView dismiss = dialog.findViewById(R.id.dismiss);
-
-        Spinner spinner1 = dialog.findViewById(R.id.spinner);
-        ImageView image1 = dialog.findViewById(R.id.photoThing);
-
+        spinner1 = dialog.findViewById(R.id.spinner);
         EditText name1 = dialog.findViewById(R.id.nameThing), describing1 = dialog.findViewById(R.id.describingNew), conditions1 = dialog.findViewById(R.id.conditionsThing), area1 = dialog.findViewById(R.id.actv);
+
+
+        {
+            name1.setText("Кошелёк");
+            describing1.setText("Ту должно быть описание");
+            conditions1.setText("Тут должно быть условие");
+            area1.setText("67 Смоленская область");
+            // btPublishNewPost.setEnabled(false);
+        }
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!(name1.getText().toString().trim().equals("") && describing1.getText().toString().trim().equals("") && conditions1.getText().toString().trim().equals("") && area1.getText().toString().trim().equals(""))) {
+                    btPublishNewPost.setEnabled(true);
+
+                } else btPublishNewPost.setEnabled(false);
+            }
+        };
+        name1.addTextChangedListener(textWatcher);
+        describing1.addTextChangedListener(textWatcher);
+        conditions1.addTextChangedListener(textWatcher);
+        area1.addTextChangedListener(textWatcher);
+
+
         dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,21 +192,30 @@ public class List extends AppCompatActivity {
         btPublishNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (Arrays.asList(areas).contains(area1.getText().toString())) {
+                    String name = name1.getText().toString();
+                    String describing = describing1.getText().toString();
+                    String conditions = conditions1.getText().toString();
+                    String area = area1.getText().toString();
+                    Long data1 = System.currentTimeMillis();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, HH:mm", new Locale("ru"));
+                    Date resultdate = new Date(data1);
+                    String data = sdf.format(resultdate);
+                    dataBase = FirebaseDatabase.getInstance();
+                    uid = FirebaseAuth.getInstance().getUid();
+                    reference = dataBase.getReference("things");
 
-
-                String name = name1.getText().toString();
-                String describing = describing1.getText().toString();
-                String conditions = conditions1.getText().toString();
-                String area = area1.getText().toString();
-                String spinner = spinner1.getSelectedItem().toString();
-                dataBase = FirebaseDatabase.getInstance();
-                uid = FirebaseAuth.getInstance().getUid();
+                    String r = UUID.randomUUID().toString();
+                    StorageReference ref = storageReference.child("images/" + r);
+                    HelperClassThings helperClassThings = new HelperClassThings(name, describing, conditions, area, data, "images/" + r);
+                    addLostThing(helperClassThings, ref);
+                } else area1.setError("Неверно введена область");
             }
         });
 
         @SuppressLint("ResourceType") ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, R.layout.color_spiner, new String[]{"Находка", "Подарок"});
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner1.setAdapter( adapter1);
+        spinner1.setAdapter(adapter1);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -190,11 +243,26 @@ public class List extends AppCompatActivity {
 
     }
 
-    private String getFileExtensions(Uri mUri) {
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cr.getType(mUri));
+    private void addLostThing(HelperClassThings helperClassThings, StorageReference ref) {
+        String id = reference.push().getKey();
+        reference.child(spinner1.getSelectedItem().toString()).child(user.getUid()).child(id).setValue(helperClassThings);
+        if (filePath != null) {
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(List.this, "Готово", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(List.this, "Не получилось", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
+
 
     private void pickImageFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -206,8 +274,8 @@ public class List extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            imageUri = data.getData();
-            photoThing.setImageURI(imageUri);
+            filePath = data.getData();
+            photoThing.setImageURI(filePath);
         }
     }
 
