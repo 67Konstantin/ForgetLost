@@ -56,10 +56,9 @@
             android:ems="10"
             android:drawableLeft="@drawable/ic_baseline_person_pin_24"
             android:drawablePadding="10dp"
-            android:hint="user@gmail.com"
+            android:hint="Ваша почта"
             android:inputType="textPersonName"
             android:padding="15sp"
-            android:text="pilmeshok@gmail.com"
             android:textColor="#7E7E9A"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +79,6 @@
             app:layout_constraintTop_toBottomOf="@+id/editText_gmail_login" />
 
         <EditText
-            android:text="30032006"
             android:id="@+id/et_password_login"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -91,7 +89,7 @@
             android:ems="10"
             android:drawableLeft="@drawable/baseline_security_24"
             android:drawablePadding="10dp"
-            android:hint="Введите ваш пароль"
+            android:hint="Введите Ваш пароль"
             android:inputType="textPersonName"
             android:padding="15sp"
             android:textColor="#7E7E9A"

@@ -70,7 +70,7 @@ public class List extends AppCompatActivity {
     Spinner spinner1;
     EditText name1;
     String uid;
-    boolean x = false;
+    boolean x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,14 +139,7 @@ public class List extends AppCompatActivity {
         name1 = dialog.findViewById(R.id.nameThing);
         EditText describing1 = dialog.findViewById(R.id.describingNew), conditions1 = dialog.findViewById(R.id.conditionsThing), area1 = dialog.findViewById(R.id.actv);
         x = false;
-
-        {
-            name1.setText("Кошелёк");
-            describing1.setText("Ту должно быть описание");
-            conditions1.setText("Тут должно быть условие");
-            area1.setText("67 Смоленская область");
-            btPublishNewPost.setEnabled(false);
-        }
+        btPublishNewPost.setEnabled(false);
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -293,7 +286,7 @@ public class List extends AppCompatActivity {
             filePath = data.getData();
             photoThing.setImageURI(filePath);
             x = true;
-            name1.setText(name1.getText().toString()+"");
+            name1.setText(name1.getText().toString() + "");
         }
     }
 

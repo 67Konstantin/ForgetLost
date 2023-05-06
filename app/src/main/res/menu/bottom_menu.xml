@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/home"
-        android:title="Потеряшки"
+        android:title="Находки"
         android:icon="@drawable/icon_lost_things"/>
 
     <item
