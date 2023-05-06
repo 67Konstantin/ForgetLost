@@ -3,6 +3,7 @@ package com.example.forgetlost;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -40,6 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -66,8 +68,9 @@ public class List extends AppCompatActivity {
     AutoCompleteTextView autoCompleteTextView;
     Button btPublishNewPost;
     Spinner spinner1;
-
+    EditText name1;
     String uid;
+    boolean x = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,15 +136,16 @@ public class List extends AppCompatActivity {
         autoCompleteTextView.setAdapter(adapter);
         photoThing = dialog.findViewById(R.id.photoThing);
         spinner1 = dialog.findViewById(R.id.spinner);
-        EditText name1 = dialog.findViewById(R.id.nameThing), describing1 = dialog.findViewById(R.id.describingNew), conditions1 = dialog.findViewById(R.id.conditionsThing), area1 = dialog.findViewById(R.id.actv);
-
+        name1 = dialog.findViewById(R.id.nameThing);
+        EditText describing1 = dialog.findViewById(R.id.describingNew), conditions1 = dialog.findViewById(R.id.conditionsThing), area1 = dialog.findViewById(R.id.actv);
+        x = false;
 
         {
             name1.setText("Кошелёк");
             describing1.setText("Ту должно быть описание");
             conditions1.setText("Тут должно быть условие");
             area1.setText("67 Смоленская область");
-            // btPublishNewPost.setEnabled(false);
+            btPublishNewPost.setEnabled(false);
         }
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -156,7 +160,7 @@ public class List extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!(name1.getText().toString().trim().equals("") && describing1.getText().toString().trim().equals("") && conditions1.getText().toString().trim().equals("") && area1.getText().toString().trim().equals(""))) {
+                if (!(name1.getText().toString().trim().equals("") && describing1.getText().toString().trim().equals("") && conditions1.getText().toString().trim().equals("") && area1.getText().toString().trim().equals("")) && x) {
                     btPublishNewPost.setEnabled(true);
 
                 } else btPublishNewPost.setEnabled(false);
@@ -166,7 +170,6 @@ public class List extends AppCompatActivity {
         describing1.addTextChangedListener(textWatcher);
         conditions1.addTextChangedListener(textWatcher);
         area1.addTextChangedListener(textWatcher);
-
 
         dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +184,7 @@ public class List extends AppCompatActivity {
                     if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                         requestPermissions(permissions, PERMISSION_CODE);
+
                     } else {
                         pickImageFromGallery();
                     }
@@ -206,9 +210,9 @@ public class List extends AppCompatActivity {
                     reference = dataBase.getReference("things");
 
                     String r = UUID.randomUUID().toString();
-                    StorageReference ref = storageReference.child("images/" + r);
-                    HelperClassThings helperClassThings = new HelperClassThings(name, describing, conditions, area, data, "images/" + r);
-                    addLostThing(helperClassThings, ref);
+                    StorageReference ref = storageReference.child("images/things/" + r);
+                    HelperClassThings helperClassThings = new HelperClassThings(name, describing, conditions, area, data, "images/things/" + r);
+                    addThing(helperClassThings, ref);
                 } else area1.setError("Неверно введена область");
             }
         });
@@ -240,25 +244,36 @@ public class List extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
-
     }
 
-    private void addLostThing(HelperClassThings helperClassThings, StorageReference ref) {
+    private void addThing(HelperClassThings helperClassThings, StorageReference ref) {
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Загрузка...");
+        progressDialog.show();
         String id = reference.push().getKey();
         reference.child(spinner1.getSelectedItem().toString()).child(user.getUid()).child(id).setValue(helperClassThings);
         if (filePath != null) {
             ref.putFile(filePath)
-
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(List.this, "Готово", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            Toast.makeText(List.this, "Запись опубликована", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(List.this, "Не получилось", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            Toast.makeText(List.this, "Что то пошло не так", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Загружено " + (int) progress + "%");
                         }
                     });
         }
@@ -277,6 +292,8 @@ public class List extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             filePath = data.getData();
             photoThing.setImageURI(filePath);
+            x = true;
+            name1.setText(name1.getText().toString()+"");
         }
     }
 
