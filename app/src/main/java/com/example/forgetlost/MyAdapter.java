@@ -36,7 +36,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Glide.with(context).load(dataList.get(position).getImgPath()).into(holder.listImage);
+        Glide.with(context).load(dataList.get(position).getImage()).into(holder.listImage);
         holder.listName.setText(dataList.get(position).getName());
         holder.listDescribing.setText(dataList.get(position).getDescribing());
         holder.listData.setText(dataList.get(position).getData().substring( 0, dataList.get(position).getData().indexOf(",")));
@@ -46,7 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("Image", dataList.get(holder.getAdapterPosition()).getImgPath());
+                intent.putExtra("Image", dataList.get(holder.getAdapterPosition()).getImage());
                 intent.putExtra("idThing", idThing);
                 context.startActivity(intent);
             }

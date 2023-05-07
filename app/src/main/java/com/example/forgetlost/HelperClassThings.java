@@ -1,18 +1,18 @@
 package com.example.forgetlost;
 
 public class HelperClassThings {
-    String name, describing, conditions, area, imgPath, data, userId;
+    String name, describing, conditions, area, image, data, userId;
 
     private String key;
 
-    public HelperClassThings(String name, String describing, String conditions, String area, String data, String userId, String imgPath) {
+    public HelperClassThings(String name, String describing, String conditions, String area, String data, String userId, String image) {
         this.name = name;
         this.describing = describing;
         this.conditions = conditions;
         this.area = area;
         this.data = data;
         this.userId = userId;
-        this.imgPath = imgPath;
+        this.image = image;
     }
 
     public String getKey() {
@@ -39,12 +39,12 @@ public class HelperClassThings {
         this.userId = userId;
     }
 
-    public String getImgPath() {
-        return imgPath;
+    public String getImage() {
+        return image;
     }
 
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getDescribing() {

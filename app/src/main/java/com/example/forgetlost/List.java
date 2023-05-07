@@ -2,6 +2,7 @@ package com.example.forgetlost;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -34,8 +35,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.forgetlost.databinding.ActivityListActivtyBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -46,8 +49,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -71,6 +76,10 @@ public class List extends AppCompatActivity {
     EditText name1;
     String uid;
     boolean x;
+    Uri uri;
+    String imageURL;
+
+    EditText describing1, conditions1, area1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +146,9 @@ public class List extends AppCompatActivity {
         photoThing = dialog.findViewById(R.id.photoThing);
         spinner1 = dialog.findViewById(R.id.spinner);
         name1 = dialog.findViewById(R.id.nameThing);
-        EditText describing1 = dialog.findViewById(R.id.describingNew), conditions1 = dialog.findViewById(R.id.conditionsThing), area1 = dialog.findViewById(R.id.actv);
+        describing1 = dialog.findViewById(R.id.describingNew);
+        conditions1 = dialog.findViewById(R.id.conditionsThing);
+        area1 = dialog.findViewById(R.id.actv);
         x = false;
         btPublishNewPost.setEnabled(false);
         TextWatcher textWatcher = new TextWatcher() {
@@ -204,7 +215,7 @@ public class List extends AppCompatActivity {
 
                     String r = UUID.randomUUID().toString();
                     StorageReference ref = storageReference.child("images/things/" + r);
-                    HelperClassThings helperClassThings = new HelperClassThings(name, describing, conditions, area, data, user.getUid(),"images/things/" + r);
+                    HelperClassThings helperClassThings = new HelperClassThings(name, describing, conditions, area, data, user.getUid(), "images/things/" + r);
                     addThing(helperClassThings, ref);
                     dialog.dismiss();
                 } else area1.setError("Неверно введена область");
@@ -273,6 +284,7 @@ public class List extends AppCompatActivity {
                     });
         }
     }
+
 
 
     private void pickImageFromGallery() {

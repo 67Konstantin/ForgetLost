@@ -25,8 +25,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_settings"
-            app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
+            android:src="@drawable/icon_settings" />
 
         <TextView
             android:id="@+id/listName"
