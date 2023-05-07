@@ -204,8 +204,9 @@ public class List extends AppCompatActivity {
 
                     String r = UUID.randomUUID().toString();
                     StorageReference ref = storageReference.child("images/things/" + r);
-                    HelperClassThings helperClassThings = new HelperClassThings(name, describing, conditions, area, data, "images/things/" + r);
+                    HelperClassThings helperClassThings = new HelperClassThings(name, describing, conditions, area, data, user.getUid(),"images/things/" + r);
                     addThing(helperClassThings, ref);
+                    dialog.dismiss();
                 } else area1.setError("Неверно введена область");
             }
         });
@@ -253,6 +254,7 @@ public class List extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
                             Toast.makeText(List.this, "Запись опубликована", Toast.LENGTH_SHORT).show();
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
