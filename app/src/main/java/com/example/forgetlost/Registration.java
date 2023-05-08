@@ -35,10 +35,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.net.InetAddress;
 
 
 public class Registration extends AppCompatActivity {
@@ -55,32 +58,6 @@ public class Registration extends AppCompatActivity {
     View layer1;
     String uid, password;
 
-    static void dialogShow(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo == null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
-            Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.alert_dialog);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-            Button bt = dialog.findViewById(R.id.btTryAgain);
-            bt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    throw new RuntimeException("Stub!");
-                }
-            });
-            dialog.show();
-        } else {
-
-
-        }
-
-
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +67,6 @@ public class Registration extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null) {
             startActivity(new Intent(Registration.this, List.class));
         }
-        dialogShow(this);
         {
             etEmail = findViewById(R.id.editText_gmail);
             etname = findViewById(R.id.editText_name);
@@ -123,7 +99,6 @@ public class Registration extends AppCompatActivity {
         checkBox.setHighlightColor(Color.TRANSPARENT);
 
 
-
     }
 
     public void SingInGoogle(View view) {
@@ -131,20 +106,22 @@ public class Registration extends AppCompatActivity {
     }
 
     public void RegClick(View view) {
-        String email = etEmail.getText().toString();
-        password = etPassword.getText().toString();
-        String name = etname.getText().toString();
-        if (x == 0) {
-            if (checkEmail(etEmail)) {
-                etEmail.setError(null);
-                if (etname.getText().toString().length() != 0) {
-                    etname.setError(null);
-                    if (password.length() >= 8) {
-                        etPassword.setError(null);
-                        if (!password.matches("(.*) (.*)")) {
+        if (isNetworkConnected()) {
+
+            String email = etEmail.getText().toString();
+            password = etPassword.getText().toString();
+            String name = etname.getText().toString();
+
+            if (x == 0) {
+                if (checkEmail(etEmail)) {
+                    etEmail.setError(null);
+                    if (etname.getText().toString().length() != 0) {
+                        etname.setError(null);
+                        if (password.length() >= 8) {
                             etPassword.setError(null);
-                            if (checkBox.isChecked()) {
-                                if (x == 0) {
+                            if (!password.matches("(.*) (.*)")) {
+                                etPassword.setError(null);
+                                if (checkBox.isChecked()) {
                                     linearLayout.addView(layer1);
                                     setMargins(tv2, 18, 300, 18, 10);
 
@@ -209,20 +186,28 @@ public class Registration extends AppCompatActivity {
                     etEmail.setError("Некорректно введена почта ");
                     vibrator.vibrate(mls);
                 }
-            }
-        } else if (x == 1) {
-            FirebaseAuth.getInstance().getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
-                        Toast.makeText(Registration.this, "Вы успешно подтвердили почту", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Registration.this, List.class));
-                    } else {
-                        Toast.makeText(Registration.this, "Вы не подтвердили почту", Toast.LENGTH_SHORT).show();
+            } else if (x == 1) {
+                FirebaseAuth.getInstance().getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                            Toast.makeText(Registration.this, "Вы успешно подтвердили почту", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(Registration.this, List.class));
+                        } else {
+                            Toast.makeText(Registration.this, "Вы не подтвердили почту", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            });
+                });
+            }
+
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.btRegisterEnd), "Подключение к интернету отсутсвует", Snackbar.LENGTH_LONG);
+            view = snackbar.getView();
+            TextView textView = view.findViewById(R.id.snackbar_text);
+            textView.setTextColor(Color.RED);
+            snackbar.show();
         }
+
     }
 
 
@@ -241,5 +226,10 @@ public class Registration extends AppCompatActivity {
             p.setMargins(left, top, right, bottom);
             view.requestLayout();
         }
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }

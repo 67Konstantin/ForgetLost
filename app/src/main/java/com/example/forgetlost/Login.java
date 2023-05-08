@@ -1,6 +1,9 @@
 package com.example.forgetlost;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -15,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -103,6 +107,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void LogClick(View view) {
+        if (isNetworkConnected()){
         if (checkEmail(loginUserEmail)) {
             if (loginPassword.getText().toString().length() >= 8) {
                 if (firebaseAuth.getCurrentUser() != null) {
@@ -133,6 +138,12 @@ public class Login extends AppCompatActivity {
             } else {
                 loginUserEmail.setError("Неверно введена почта");
 
+        }} else {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.btLoginEnd), "Подключение к интернету отсутсвует", Snackbar.LENGTH_LONG);
+            view = snackbar.getView();
+            TextView textView = view.findViewById(R.id.snackbar_text);
+            textView.setTextColor(Color.RED);
+            snackbar.show();
         }
     }
 
@@ -143,5 +154,9 @@ public class Login extends AppCompatActivity {
         } else {
             return false;
         }
+    }
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }
