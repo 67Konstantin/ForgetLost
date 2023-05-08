@@ -1,6 +1,8 @@
 package com.example.forgetlost;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +31,6 @@ import java.util.List;
 
 
 public class LostThingsFragment extends Fragment {
-
-    FirebaseAuth mAuth;
-    DatabaseReference mRef;
-    FirebaseUser user = mAuth.getInstance().getCurrentUser();
-    FirebaseListAdapter mAdapter;
-
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
     RecyclerView recyclerView;
@@ -42,7 +38,6 @@ public class LostThingsFragment extends Fragment {
     MyAdapter adapter;
     SearchView searchView;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,4 +103,5 @@ public class LostThingsFragment extends Fragment {
         }
         adapter.searchDataList(searchList);
     }
+
 }
