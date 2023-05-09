@@ -67,7 +67,6 @@ public class List extends AppCompatActivity {
     private static final int PERMISSION_CODE = 1001;
     private Uri filePath;
     FirebaseAuth firebaseAuth;
-
     FirebaseDatabase dataBase;
     DatabaseReference reference;
     StorageReference storageReference;
@@ -80,8 +79,6 @@ public class List extends AppCompatActivity {
     EditText name1;
     String uid;
     boolean x;
-    Uri uri;
-    String imageURL;
 
     EditText describing1, conditions1, area1;
 

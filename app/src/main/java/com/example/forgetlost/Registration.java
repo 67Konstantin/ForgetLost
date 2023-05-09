@@ -122,8 +122,6 @@ public class Registration extends AppCompatActivity {
                             if (!password.matches("(.*) (.*)")) {
                                 etPassword.setError(null);
                                 if (checkBox.isChecked()) {
-                                    linearLayout.addView(layer1);
-                                    setMargins(tv2, 18, 300, 18, 10);
 
                                     firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                         @Override
@@ -149,6 +147,8 @@ public class Registration extends AppCompatActivity {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if (task.isSuccessful()) {
+                                                                    linearLayout.addView(layer1);
+                                                                    setMargins(tv2, 18, 300, 18, 10);
                                                                     Toast.makeText(Registration.this, "Письмо было отправлено на почту " + email, Toast.LENGTH_SHORT).show();
                                                                     btReg.setText("Проверить Верификацию");
                                                                     x = 1;

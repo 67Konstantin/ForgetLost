@@ -36,18 +36,31 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        String name = dataList.get(position).getName();
+        String describing = dataList.get(position).getDescribing();
+        String data = dataList.get(position).getData().substring(0, dataList.get(position).getData().indexOf(","));
+        String userId = dataList.get(position).getUserId();
+        String conditions = dataList.get(position).getConditions();
+        String area = dataList.get(position).getArea();
+
         Glide.with(context).load(dataList.get(position).getImage()).into(holder.listImage);
-        holder.listName.setText(dataList.get(position).getName());
-        holder.listDescribing.setText(dataList.get(position).getDescribing());
-        holder.listData.setText(dataList.get(position).getData().substring( 0, dataList.get(position).getData().indexOf(",")));
-        String idThing = dataList.get(position).getUserId();
+        holder.listName.setText(name);
+        holder.listDescribing.setText(describing);
+        holder.listData.setText(data);
+
 
         holder.recCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("Image", dataList.get(holder.getAdapterPosition()).getImage());
-                intent.putExtra("idThing", idThing);
+                intent.putExtra("image", dataList.get(holder.getAdapterPosition()).getImage());
+                intent.putExtra("userId", userId);
+                intent.putExtra("name", name);
+                intent.putExtra("describing", describing);
+                intent.putExtra("data", data);
+                intent.putExtra("area", area);
+                intent.putExtra("conditions", conditions);
+
                 context.startActivity(intent);
             }
         });
@@ -58,13 +71,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return dataList.size();
     }
 
-    public void searchDataList(ArrayList<HelperClassThings> searchList){
+    public void searchDataList(ArrayList<HelperClassThings> searchList) {
         dataList = searchList;
         notifyDataSetChanged();
     }
 }
 
-class MyViewHolder extends RecyclerView.ViewHolder{
+class MyViewHolder extends RecyclerView.ViewHolder {
 
     ImageView listImage;
     TextView listName, listDescribing, listData;

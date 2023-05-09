@@ -56,7 +56,6 @@ public class Login extends AppCompatActivity {
         startActivity(new Intent(Login.this, Registration.class));
     }
 
-
     public boolean validatePassword() {
         String val = loginPassword.getText().toString();
         if (val.isEmpty()) {
