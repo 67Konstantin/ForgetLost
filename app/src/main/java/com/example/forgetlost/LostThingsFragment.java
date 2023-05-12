@@ -40,6 +40,7 @@ public class LostThingsFragment extends Fragment {
     SearchView searchView;
     private ALodingDialog aLodingDialog;
     final int xy = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class LostThingsFragment extends Fragment {
                 aLodingDialog.cancel();
             }
         };
-        handler.postDelayed(runnable,5000);
+        handler.postDelayed(runnable,10000);
 
         dataList = new ArrayList<>();
         adapter = new MyAdapter(getActivity(), dataList);

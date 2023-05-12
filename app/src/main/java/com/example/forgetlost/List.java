@@ -5,15 +5,14 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -27,7 +26,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +40,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -67,6 +64,7 @@ public class List extends AppCompatActivity {
     private static final int PERMISSION_CODE = 1001;
     private Uri filePath;
     FirebaseAuth firebaseAuth;
+
     FirebaseDatabase dataBase;
     DatabaseReference reference;
     StorageReference storageReference;
@@ -79,13 +77,15 @@ public class List extends AppCompatActivity {
     EditText name1;
     String uid;
     boolean x;
+    String imageURL;
 
     EditText describing1, conditions1, area1;
+
+    private ALodingDialog aLodingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         firebaseAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -203,27 +203,13 @@ public class List extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (Arrays.asList(areas).contains(area1.getText().toString())) {
-                    String name = name1.getText().toString();
-                    String describing = describing1.getText().toString();
-                    String conditions = conditions1.getText().toString();
-                    String area = area1.getText().toString();
-                    Long data1 = System.currentTimeMillis();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, HH:mm", new Locale("ru"));
-                    Date resultdate = new Date(data1);
-                    String data = sdf.format(resultdate);
-                    dataBase = FirebaseDatabase.getInstance();
-                    uid = FirebaseAuth.getInstance().getUid();
-                    reference = dataBase.getReference("things");
-
-                    String r = UUID.randomUUID().toString();
-                    StorageReference ref = storageReference.child("images/things/" + r);
-                    HelperClassThings helperClassThings = new HelperClassThings(name, describing, conditions, area, data, user.getUid(), "images/things/" + r);
-                    addThing(helperClassThings, ref);
-                    dialog.dismiss();
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images").child(filePath.getLastPathSegment());
+                    addThing(storageReference, dialog);
                 } else area1.setError("Неверно введена область");
             }
         });
 
+        aLodingDialog = new ALodingDialog(List.this);
         @SuppressLint("ResourceType") ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, R.layout.color_spiner, new String[]{"Находка", "Подарок"});
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adapter1);
@@ -253,38 +239,57 @@ public class List extends AppCompatActivity {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    private void addThing(HelperClassThings helperClassThings, StorageReference ref) {
+    private void addThing(StorageReference storageReference, Dialog dialog) {
+        aLodingDialog.show();
 
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Загрузка...");
-        progressDialog.show();
-        String id = reference.push().getKey();
-        reference.child(spinner1.getSelectedItem().toString()).child(user.getUid()).child(id).setValue(helperClassThings);
-        if (filePath != null) {
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(List.this, "Запись опубликована", Toast.LENGTH_SHORT).show();
+        storageReference.child(filePath.getLastPathSegment()).putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri urlImage = uriTask.getResult();
+                imageURL = urlImage.toString();
+                uploadData(dialog);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                aLodingDialog.cancel();
+                Toast.makeText(List.this, "Не удалось загрузить изображение", Toast.LENGTH_SHORT).show();
 
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(List.this, "Что то пошло не так", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Загружено " + (int) progress + "%");
-                        }
-                    });
-        }
+            }
+        });
+    }
+
+    public void uploadData(Dialog dialog) {
+        String name = name1.getText().toString();
+        String describing = describing1.getText().toString();
+        String conditions = conditions1.getText().toString();
+        String area = area1.getText().toString();
+        String data = new SimpleDateFormat("dd MMM yyyy, HH:mm", new Locale("ru")).format(new Date(System.currentTimeMillis()));
+
+        HelperClassThings helperClassThings = new HelperClassThings(name, describing, conditions, area, data, user.getUid(), imageURL);
+
+        String id = FirebaseDatabase.getInstance().getReference("things").push().getKey();
+        reference = FirebaseDatabase.getInstance().getReference("things").child(spinner1.getSelectedItem().toString()).child(user.getUid()).child(id);
+
+        reference.setValue(helperClassThings).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    dialog.dismiss();
+                    aLodingDialog.cancel();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(List.this, "Не удалось добавить объявление", Toast.LENGTH_SHORT).show();
+                aLodingDialog.cancel();
+            }
+        });
+
+
     }
 
 
@@ -302,6 +307,7 @@ public class List extends AppCompatActivity {
             photoThing.setImageURI(filePath);
             x = true;
             name1.setText(name1.getText().toString() + "");
+
         }
     }
 
@@ -318,6 +324,5 @@ public class List extends AppCompatActivity {
             }
         }
     }
-
 
 }
