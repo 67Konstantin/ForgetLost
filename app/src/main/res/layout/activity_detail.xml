@@ -1,109 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".DetailActivity">
-
     <TextView
+        android:id="@+id/detailName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/detailTitle"
-        android:text="Название"
+        android:layout_gravity="center"
         android:layout_marginTop="14dp"
-        android:textSize="24sp"
-        android:layout_gravity="center"
         android:layout_marginBottom="12dp"
-        android:textColor="@color/purple"/>
+        android:text="Название"
+        android:textColor="@color/purple"
+        android:textSize="24sp" />
 
-    <ImageView
-        android:layout_width="400dp"
-        android:layout_height="200dp"
-        android:id="@+id/detailImage"
-        android:padding="8dp"
-        android:layout_gravity="center"
-        android:src="@drawable/arrow_load"
-        android:scaleType="centerCrop"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="20dp"
-        android:text="Описание"
-        android:layout_gravity="center"
-        android:id="@+id/detailLang"
-        android:textSize="18sp"
-        android:textColor="@color/purple"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="20dp"
-        android:text="Условия возврата"
-        android:layout_gravity="center"
-        android:id="@+id/detailDesc"
-        android:textSize="18sp"
-        android:textColor="@color/purple"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="20dp"
-        android:text="Область"
-        android:layout_gravity="center"
-        android:id="@+id/detailArea"
-        android:textSize="18sp"
-        android:textColor="@color/purple"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="20dp"
-        android:text="Дата"
-        android:layout_gravity="center"
-        android:gravity="right"
-        android:id="@+id/detailData"
-        android:textSize="14sp"
-        android:textColor="@color/dark_grey"/>
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/detailImage"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/arrow_load" />
 
+    <TextView
+        android:id="@+id/detaildescribing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_stroke"
+        android:padding="20dp"
+        android:text="Описание"
+        android:textColor="@color/purple"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/detailConditions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:padding="20dp"
+        android:background="@drawable/bg_stroke"
+        android:text="Условия возврата"
+        android:textColor="@color/purple"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/detailArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_stroke"
+        android:padding="20dp"
+        android:text="Область"
+        android:textColor="@color/purple"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/detailData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="10dp"
+        android:gravity="left"
+        android:padding="20dp"
+        android:text="Дата"
+        android:textColor="@color/dark_grey"
+        android:textSize="14sp" />
+</LinearLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
         <com.github.clans.fab.FloatingActionMenu
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            app:menu_fab_size="normal"
-            android:layout_marginBottom="20dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="20dp"
-            app:menu_colorPressed="@color/purple"
+            android:layout_marginBottom="20dp"
             app:menu_colorNormal="@color/purple"
+            app:menu_colorPressed="@color/purple"
+            app:menu_fab_size="normal"
             app:menu_icon="@drawable/ic_baseline_add_24"
             app:menu_openDirection="up"
             app:menu_showShadow="true">
+
             <com.github.clans.fab.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/editButton"
-                android:src="@drawable/baseline_share_24"
-                app:fab_showShadow="true"
-                app:fab_colorNormal="@color/purple"
-                app:fab_size="mini"/>
-            <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/deleteButton"
-                android:src="@drawable/baseline_bookmark_add_24"
-                app:fab_showShadow="true"
+                android:src="@drawable/baseline_share_24"
                 app:fab_colorNormal="@color/purple"
-                app:fab_size="mini"/>
+                app:fab_showShadow="true"
+                app:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_bookmark_add_24"
+                app:fab_colorNormal="@color/purple"
+                app:fab_showShadow="true"
+                app:fab_size="mini" />
         </com.github.clans.fab.FloatingActionMenu>
+</RelativeLayout>
 
-
-
-    </RelativeLayout>
+</FrameLayout>
 </LinearLayout>

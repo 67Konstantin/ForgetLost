@@ -2,6 +2,7 @@ package com.example.forgetlost;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class GiftFragment extends Fragment {
     List<HelperClassThings> dataList;
     MyAdapter adapter;
     SearchView searchView;
+    ALodingDialog aLodingDialog;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -47,17 +49,22 @@ public class GiftFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(false);
-        builder.setView(R.layout.progress_layout);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        aLodingDialog = new ALodingDialog(getActivity());
+        aLodingDialog.show();
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                aLodingDialog.cancel();
+            }
+        };
+        handler.postDelayed(runnable,5000);
+
 
         dataList = new ArrayList<>();
         adapter = new MyAdapter(getActivity(), dataList);
         recyclerView.setAdapter(adapter);
         databaseReference = FirebaseDatabase.getInstance().getReference("things").child("Подарок");
-        dialog.show();
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -69,13 +76,13 @@ public class GiftFragment extends Fragment {
                         dataList.add(helperClassThings);
                     }
                     adapter.notifyDataSetChanged();
-                    dialog.dismiss();
+                    aLodingDialog.cancel();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                dialog.dismiss();
+                aLodingDialog.cancel();
             }
         });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

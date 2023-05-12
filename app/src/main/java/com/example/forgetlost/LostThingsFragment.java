@@ -39,6 +39,7 @@ public class LostThingsFragment extends Fragment {
     MyAdapter adapter;
     SearchView searchView;
     private ALodingDialog aLodingDialog;
+    final int xy = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,7 +49,6 @@ public class LostThingsFragment extends Fragment {
         searchView.clearFocus();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
-
 
         aLodingDialog = new ALodingDialog(getActivity());
         aLodingDialog.show();
