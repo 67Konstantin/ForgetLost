@@ -7,7 +7,6 @@
     tools:context=".ProgressBar">
 
 
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
         android:layout_width="match_parent"

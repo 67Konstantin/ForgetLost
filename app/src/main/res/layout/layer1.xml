@@ -10,12 +10,12 @@
         android:layout_height="wrap_content"
         android:fontFamily="serif"
         android:text="Подтверждение почты"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg"
         android:padding="10dp"
-        android:text="На вашу почту было отправленно письмо с ссылкой на верификацию."/>
+        android:text="На вашу почту было отправленно письмо с ссылкой на верификацию." />
 </LinearLayout>
