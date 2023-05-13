@@ -12,11 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="12dp"
         android:layout_marginTop="14dp"
         android:layout_marginBottom="12dp"
         android:text="Название"
         android:textColor="@color/purple"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textStyle="bold"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -37,36 +39,59 @@
                 android:src="@drawable/arrow_load" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Описание"
+                android:textStyle="italic"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
                 android:id="@+id/detaildescribing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:background="@drawable/bg_stroke"
                 android:padding="20dp"
                 android:text="Описание"
                 android:textColor="@color/purple"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:layout_marginTop="3dp"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Условия / Контакты"
+                android:layout_marginTop="10dp"
+                android:textStyle="italic"
+                android:layout_marginHorizontal="10dp"/>
             <TextView
                 android:id="@+id/detailConditions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:background="@drawable/bg_stroke"
                 android:padding="20dp"
                 android:text="Условия возврата"
                 android:textColor="@color/purple"
-                android:textSize="18sp" />
-
+                android:textSize="18sp"
+                android:layout_marginTop="3dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Область"
+                android:layout_marginTop="10dp"
+                android:textStyle="italic"
+                android:layout_marginHorizontal="10dp"/>
             <TextView
                 android:id="@+id/detailArea"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="3dp"
                 android:background="@drawable/bg_stroke"
                 android:padding="20dp"
                 android:text="Область"
@@ -83,7 +108,8 @@
                 android:padding="20dp"
                 android:text="Дата"
                 android:textColor="@color/dark_grey"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="italic"/>
         </LinearLayout>
 
         <RelativeLayout

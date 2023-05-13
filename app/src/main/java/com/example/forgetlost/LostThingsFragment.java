@@ -60,8 +60,7 @@ public class LostThingsFragment extends Fragment {
                 aLodingDialog.cancel();
             }
         };
-        handler.postDelayed(runnable,10000);
-
+        handler.postDelayed(runnable,400000);
         dataList = new ArrayList<>();
         adapter = new MyAdapter(getActivity(), dataList);
         recyclerView.setAdapter(adapter);

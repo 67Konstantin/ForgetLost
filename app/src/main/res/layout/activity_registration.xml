@@ -66,7 +66,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.078"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView1" />
+            app:layout_constraintTop_toBottomOf="@+id/textView1"
+            android:textStyle="italic"/>
 
         <LinearLayout
             android:id="@+id/lineal"
@@ -88,6 +89,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="serif"
             android:text="Имя"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
@@ -120,6 +122,7 @@
             android:layout_marginTop="18dp"
             android:fontFamily="serif"
             android:text="Пароль"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.084"
             app:layout_constraintStart_toStartOf="parent"

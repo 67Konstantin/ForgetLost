@@ -38,7 +38,9 @@
             android:gravity="center"
             android:text="Название"
             android:textColor="@color/purple"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <TextView
             android:id="@+id/listTime"

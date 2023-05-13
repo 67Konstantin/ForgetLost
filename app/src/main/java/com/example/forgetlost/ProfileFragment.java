@@ -1,32 +1,53 @@
 package com.example.forgetlost;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class ProfileFragment extends Fragment {
-    Button bt;
+    Button btSingOut;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser user;
+    FrameLayout flImageProfile;
+    ImageView ivImageProfile;
+    TextView tvNameProfile, tvEmailProfile, tvSettingsProfile, tvMyRecords, tvAboutApp;
+String uid;
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        bt = view.findViewById(R.id.button);
-        bt.setOnClickListener(new View.OnClickListener() {
+        {
+            user = firebaseAuth.getCurrentUser();
+            flImageProfile = view.findViewById(R.id.flImageProfile);
+            ivImageProfile = view.findViewById(R.id.ivImageProfile);
+            tvNameProfile = view.findViewById(R.id.tvNameProfile);
+            tvEmailProfile = view.findViewById(R.id.tvEmailProfile);
+            tvSettingsProfile = view.findViewById(R.id.tvSettingsProfile);
+            tvAboutApp = view.findViewById(R.id.tvAboutApp);
+            tvMyRecords = view.findViewById(R.id.tvMyRecords);
+            btSingOut = view.findViewById(R.id.button);
+            uid = user.getUid();
+        }
+        btSingOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "ПРО", Toast.LENGTH_SHORT).show();
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getActivity(),Registration.class));
+                startActivity(new Intent(getActivity(), Registration.class));
             }
         });
         return view;
