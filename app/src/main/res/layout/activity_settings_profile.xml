@@ -70,7 +70,7 @@
         android:textStyle="italic"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="40dp"/>
-    <EditText
+    <TextView
         android:id="@+id/tvProfileEmailRedact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
         android:textStyle="italic"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="40dp"/>
-    <EditText
+    <TextView
         android:id="@+id/etPasswordRedact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
         android:background="@drawable/bg"
         android:padding="10dp"
         android:textSize="20dp"
-        android:text="Имя"
+        android:text="Ваш пароль"
         android:layout_marginTop="3dp"
         android:inputType="textPassword"
         />
@@ -110,6 +110,6 @@
         android:padding="5dp"
         android:text="Вы можете сменить пароль"
         android:textColor="#4540F7"
-        android:textSize="10dp"
+        android:textSize="12dp"
         android:layout_marginHorizontal="20dp"/>
 </LinearLayout>

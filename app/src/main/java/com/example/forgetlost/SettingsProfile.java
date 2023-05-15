@@ -14,8 +14,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class SettingsProfile extends AppCompatActivity {
     FrameLayout flImageProfileRedact;
     ImageView ivImageProfileRedact;
-    EditText etProfileNameRedact, etPasswordRedact;
-    TextView tvProfileEmailRedact, tvChangePasswordRedact;
+    EditText etProfileNameRedact;
+    TextView tvProfileEmailRedact, tvChangePasswordRedact, etPasswordRedact;
     String uid;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
@@ -33,5 +33,6 @@ public class SettingsProfile extends AppCompatActivity {
             tvChangePasswordRedact = findViewById(R.id.tvChangePasswordRedact);
         }
         uid = user.getUid();
+
     }
 }

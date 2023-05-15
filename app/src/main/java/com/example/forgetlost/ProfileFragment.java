@@ -25,7 +25,8 @@ public class ProfileFragment extends Fragment {
     FrameLayout flImageProfile;
     ImageView ivImageProfile;
     TextView tvNameProfile, tvEmailProfile, tvSettingsProfile, tvMyRecords, tvAboutApp;
-String uid;
+    String uid;
+
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +51,19 @@ String uid;
                 startActivity(new Intent(getActivity(), Registration.class));
             }
         });
+        tvSettingsProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(),SettingsProfile.class));
+            }
+        });
+        tvMyRecords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MyRecords.class));
+            }
+        });
         return view;
+
     }
 }
