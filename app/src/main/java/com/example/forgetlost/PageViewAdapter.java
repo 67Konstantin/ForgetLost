@@ -1,14 +1,10 @@
 package com.example.forgetlost;
 
 import android.content.Context;
-import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.lifecycle.Lifecycle;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class PageViewAdapter extends FragmentPagerAdapter {
     private Context myContext;
@@ -23,10 +19,10 @@ public class PageViewAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                GiftFragmentMyRecords homeFragment = new GiftFragmentMyRecords();
+                LostFragmentMyRecords homeFragment = new LostFragmentMyRecords();
                 return homeFragment;
             case 1:
-                LostFragmentMyRecords settingsFragment = new LostFragmentMyRecords();
+                GiftFragmentMyRecords settingsFragment = new GiftFragmentMyRecords();
                 return settingsFragment;
             default:
                 return null;

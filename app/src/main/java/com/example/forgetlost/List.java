@@ -210,7 +210,7 @@ public class List extends AppCompatActivity {
         });
 
         aLodingDialog = new ALodingDialog(List.this);
-        @SuppressLint("ResourceType") ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, R.layout.color_spiner, new String[]{"Находка", "Подарок"});
+        @SuppressLint("ResourceType") ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, R.layout.color_spiner, new String[]{"Находка", "Отдам даром"});
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adapter1);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

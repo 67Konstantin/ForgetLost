@@ -64,7 +64,7 @@ public class GiftFragment extends Fragment {
         dataList = new ArrayList<>();
         adapter = new MyAdapter(getActivity(), dataList);
         recyclerView.setAdapter(adapter);
-        databaseReference = FirebaseDatabase.getInstance().getReference("things").child("Подарок");
+        databaseReference = FirebaseDatabase.getInstance().getReference("things").child("Отдам даром");
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

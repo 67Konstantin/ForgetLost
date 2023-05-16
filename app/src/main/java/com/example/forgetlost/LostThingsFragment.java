@@ -39,7 +39,6 @@ public class LostThingsFragment extends Fragment {
     MyAdapter adapter;
     SearchView searchView;
     private ALodingDialog aLodingDialog;
-    final int xy = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,12 +53,7 @@ public class LostThingsFragment extends Fragment {
         aLodingDialog = new ALodingDialog(getActivity());
         aLodingDialog.show();
         Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                aLodingDialog.cancel();
-            }
-        };
+        Runnable runnable = () -> aLodingDialog.cancel();
         handler.postDelayed(runnable,400000);
         dataList = new ArrayList<>();
         adapter = new MyAdapter(getActivity(), dataList);
