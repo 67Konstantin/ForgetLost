@@ -1,4 +1,4 @@
-package com.example.forgetlost;
+package com.example.forgetlost.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.forgetlost.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -71,7 +72,6 @@ public class Login extends AppCompatActivity {
         String username = loginUserEmail.getText().toString().trim();
         String userPassword = loginPassword.getText().toString().trim();
 
-        Toast.makeText(Login.this, "Окей", Toast.LENGTH_SHORT).show();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
         Query checkUserDatabase = reference.orderByChild("userName").equalTo(username);
 
@@ -87,7 +87,6 @@ public class Login extends AppCompatActivity {
                     if (passwordFromDB.equals(userPassword)) {
                         loginUserEmail.setError(null);
                         startActivity(new Intent(Login.this, List.class));
-                        Toast.makeText(Login.this, "Всё получилось", Toast.LENGTH_SHORT).show();
                     } else {
                         loginPassword.setError("Неверный пароль");
                         loginUserEmail.requestFocus();
@@ -111,7 +110,7 @@ public class Login extends AppCompatActivity {
             if (loginPassword.getText().toString().length() >= 8) {
                 if (firebaseAuth.getCurrentUser() != null) {
                     user = FirebaseAuth.getInstance().getCurrentUser();
-                    Toast.makeText(Login.this, user.getEmail() + ", вы уже вошли!", Toast.LENGTH_SHORT).show();
+                    showToast( user.getEmail() + ", вы уже вошли!");
                 } else {
 
                     firebaseAuth.signInWithEmailAndPassword(loginUserEmail.getText().toString(), loginPassword.getText().toString())
@@ -120,14 +119,14 @@ public class Login extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // User signed in successfully
-                                        Toast.makeText(Login.this, "вход выполнен", Toast.LENGTH_SHORT).show();
+                                        showToast("вход выполнен");
                                         startActivity(new Intent(Login.this, List.class));
                                     }
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(Login.this, "ошибка входа", Toast.LENGTH_SHORT).show();
+                                    showToast("ошибка входа");
                                 }
                             });
                 }
@@ -157,5 +156,8 @@ public class Login extends AppCompatActivity {
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.forgetlost;
+package com.example.forgetlost.helperClasses;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.forgetlost.R;
+import com.example.forgetlost.activities.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;

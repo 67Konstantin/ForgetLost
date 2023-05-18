@@ -1,4 +1,4 @@
-package com.example.forgetlost;
+package com.example.forgetlost.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,10 +10,13 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.forgetlost.R;
+import com.example.forgetlost.activities.MyRecords;
+import com.example.forgetlost.activities.Registration;
+import com.example.forgetlost.activities.SettingsProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -54,7 +57,7 @@ public class ProfileFragment extends Fragment {
         tvSettingsProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(),SettingsProfile.class));
+                startActivity(new Intent(getContext(), SettingsProfile.class));
             }
         });
         tvMyRecords.setOnClickListener(new View.OnClickListener() {

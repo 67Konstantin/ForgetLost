@@ -1,23 +1,21 @@
-package com.example.forgetlost;
+package com.example.forgetlost.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.forgetlost.ALodingDialog;
+import com.example.forgetlost.helperClasses.HelperClassThings;
+import com.example.forgetlost.helperClasses.MyAdapter;
+import com.example.forgetlost.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,20 +27,19 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class GiftFragment extends Fragment {
+public class LostThingsFragment extends Fragment {
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
     RecyclerView recyclerView;
     List<HelperClassThings> dataList;
     MyAdapter adapter;
     SearchView searchView;
-    ALodingDialog aLodingDialog;
+    private ALodingDialog aLodingDialog;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_gift, container, false);
+        View view = inflater.inflate(R.layout.fragment_lost_things, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
         searchView = view.findViewById(R.id.search);
         searchView.clearFocus();
@@ -52,19 +49,13 @@ public class GiftFragment extends Fragment {
         aLodingDialog = new ALodingDialog(getActivity());
         aLodingDialog.show();
         Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                aLodingDialog.cancel();
-            }
-        };
-        handler.postDelayed(runnable,5000);
-
-
+        Runnable runnable = () -> aLodingDialog.cancel();
+        handler.postDelayed(runnable,400000);
         dataList = new ArrayList<>();
         adapter = new MyAdapter(getActivity(), dataList);
         recyclerView.setAdapter(adapter);
-        databaseReference = FirebaseDatabase.getInstance().getReference("things").child("Отдам даром");
+        databaseReference = FirebaseDatabase.getInstance().getReference("things").child("Находка");
+
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -109,4 +100,5 @@ public class GiftFragment extends Fragment {
         }
         adapter.searchDataList(searchList);
     }
+
 }

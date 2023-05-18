@@ -1,23 +1,23 @@
-package com.example.forgetlost;
+package com.example.forgetlost.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseListAdapter;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.forgetlost.ALodingDialog;
+import com.example.forgetlost.helperClasses.HelperClassThings;
+import com.example.forgetlost.helperClasses.MyAdapter;
+import com.example.forgetlost.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +30,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+public class GiftFragmentMyRecords extends Fragment {
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-public class LostThingsFragment extends Fragment {
+    private String mParam1;
+    private String mParam2;
+
+
+    public static GiftFragmentMyRecords newInstance(String param1, String param2) {
+        GiftFragmentMyRecords fragment = new GiftFragmentMyRecords();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public GiftFragmentMyRecords() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
     RecyclerView recyclerView;
@@ -39,17 +66,18 @@ public class LostThingsFragment extends Fragment {
     MyAdapter adapter;
     SearchView searchView;
     private ALodingDialog aLodingDialog;
-
+    FirebaseUser user;
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_lost_things, container, false);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        searchView = view.findViewById(R.id.search);
+        View view = inflater.inflate(R.layout.fragment_gift_my_records, container, false);
+        recyclerView = view.findViewById(R.id.recyclerViewMyGift);
+        searchView = view.findViewById(R.id.searchMyGift);
         searchView.clearFocus();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
-
+        user = FirebaseAuth.getInstance().getCurrentUser();
         aLodingDialog = new ALodingDialog(getActivity());
         aLodingDialog.show();
         Handler handler = new Handler();
@@ -58,21 +86,18 @@ public class LostThingsFragment extends Fragment {
         dataList = new ArrayList<>();
         adapter = new MyAdapter(getActivity(), dataList);
         recyclerView.setAdapter(adapter);
-        databaseReference = FirebaseDatabase.getInstance().getReference("things").child("Находка");
-
+        databaseReference = FirebaseDatabase.getInstance().getReference("things").child("Отдам Даром").child(user.getUid());
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataList.clear();
                 HashMap<String, HelperClassThings> hashMap = (HashMap<String, HelperClassThings>) snapshot.getValue();
-                for (String s : hashMap.keySet()) {
-                    for (DataSnapshot ds : snapshot.child(s).getChildren()) {
-                        HelperClassThings helperClassThings = ds.getValue(HelperClassThings.class);
-                        dataList.add(helperClassThings);
-                    }
-                    adapter.notifyDataSetChanged();
-                    aLodingDialog.cancel();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    HelperClassThings helperClassThings = ds.getValue(HelperClassThings.class);
+                    dataList.add(helperClassThings);
                 }
+                adapter.notifyDataSetChanged();
+                aLodingDialog.cancel();
             }
 
             @Override
@@ -94,7 +119,6 @@ public class LostThingsFragment extends Fragment {
         });
         return view;
     }
-
     public void searchList(String text) {
         ArrayList<HelperClassThings> searchList = new ArrayList<>();
         for (HelperClassThings dataClass : dataList) {
@@ -104,5 +128,4 @@ public class LostThingsFragment extends Fragment {
         }
         adapter.searchDataList(searchList);
     }
-
 }

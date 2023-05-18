@@ -1,13 +1,10 @@
-package com.example.forgetlost;
+package com.example.forgetlost.activities;
 
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.SpannableString;
@@ -19,7 +16,6 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -32,6 +28,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.forgetlost.helperClasses.HelperClassUsers;
+import com.example.forgetlost.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -40,8 +38,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.net.InetAddress;
 
 
 public class Registration extends AppCompatActivity {
@@ -127,7 +123,7 @@ public class Registration extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(Registration.this, "Пользователь с этой почтой уже существует и вы ввели правильный пароль", Toast.LENGTH_SHORT).show();
+                                                showToast("Пользователь с этой почтой уже существует и вы ввели правильный пароль");
                                                 startActivity(new Intent(Registration.this, List.class));
                                             }
                                         }
@@ -149,16 +145,16 @@ public class Registration extends AppCompatActivity {
                                                                 if (task.isSuccessful()) {
                                                                     linearLayout.addView(layer1);
                                                                     setMargins(tv2, 18, 300, 18, 10);
-                                                                    Toast.makeText(Registration.this, "Письмо было отправлено на почту " + email, Toast.LENGTH_SHORT).show();
+                                                                    showToast("Письмо было отправлено на почту " + email);
                                                                     btReg.setText("Проверить Верификацию");
                                                                     x = 1;
                                                                 } else {
-                                                                    Toast.makeText(Registration.this, "Не удалось отправить письмо", Toast.LENGTH_SHORT).show();
+                                                                    showToast("Не удалось отправить письмо");
                                                                 }
                                                             }
                                                         });
                                                     } else {
-                                                        Toast.makeText(Registration.this, "Пользователь с этой почтой уже зарегестрирован", Toast.LENGTH_SHORT).show();
+                                                        showToast("Пользователь с этой почтой уже зарегестрирован");
                                                     }
                                                 }
                                             });
@@ -191,10 +187,10 @@ public class Registration extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
-                            Toast.makeText(Registration.this, "Вы успешно подтвердили почту", Toast.LENGTH_SHORT).show();
+                            showToast( "Вы успешно подтвердили почту");
                             startActivity(new Intent(Registration.this, List.class));
                         } else {
-                            Toast.makeText(Registration.this, "Вы не подтвердили почту", Toast.LENGTH_SHORT).show();
+                            showToast("Вы не подтвердили почту");
                         }
                     }
                 });
@@ -208,6 +204,9 @@ public class Registration extends AppCompatActivity {
             snackbar.show();
         }
 
+    }
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
 

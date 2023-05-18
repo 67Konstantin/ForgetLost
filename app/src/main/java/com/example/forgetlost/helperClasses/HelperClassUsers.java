@@ -1,4 +1,4 @@
-package com.example.forgetlost;
+package com.example.forgetlost.helperClasses;
 
 public class HelperClassUsers {
     String email, name, uid;

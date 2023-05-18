@@ -1,4 +1,4 @@
-package com.example.forgetlost;
+package com.example.forgetlost.helperClasses;
 
 public class HelperClassThings {
     String name, describing, conditions, area, image, data, userId;

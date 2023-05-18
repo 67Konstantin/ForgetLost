@@ -1,10 +1,8 @@
-package com.example.forgetlost;
+package com.example.forgetlost.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -12,7 +10,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -35,6 +32,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.forgetlost.ALodingDialog;
+import com.example.forgetlost.fragments.GiftFragment;
+import com.example.forgetlost.helperClasses.HelperClassThings;
+import com.example.forgetlost.fragments.LostThingsFragment;
+import com.example.forgetlost.fragments.MessageFragment;
+import com.example.forgetlost.fragments.ProfileFragment;
+import com.example.forgetlost.R;
 import com.example.forgetlost.databinding.ActivityListActivtyBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,17 +49,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.sql.Date;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Locale;
-import java.util.UUID;
 
 public class List extends AppCompatActivity {
     ImageView photoThing;
@@ -255,7 +255,7 @@ public class List extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 aLodingDialog.cancel();
-                Toast.makeText(List.this, "Не удалось загрузить изображение", Toast.LENGTH_SHORT).show();
+                showToast("Не удалось загрузить изображение");
 
             }
         });
@@ -284,7 +284,7 @@ public class List extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(List.this, "Не удалось добавить объявление", Toast.LENGTH_SHORT).show();
+                showToast("Не удалось добавить объявление");
                 aLodingDialog.cancel();
             }
         });
@@ -319,10 +319,12 @@ public class List extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     pickImageFromGallery();
                 } else {
-                    Toast.makeText(List.this, "Необходимо предоставить доступ к галлереи", Toast.LENGTH_SHORT).show();
+                    showToast("Необходимо предоставить доступ к галлереи");
                 }
             }
         }
     }
-
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
 }

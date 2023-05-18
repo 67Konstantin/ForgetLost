@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DetailActivity">
+    tools:context=".activities.DetailActivity">
 
     <TextView
         android:id="@+id/detailName"
@@ -18,101 +18,110 @@
         android:text="Название"
         android:textColor="@color/purple"
         android:textSize="24sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/detailImage"
-                android:layout_width="400dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/arrow_load" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Описание"
-                android:textStyle="italic"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"/>
-
-            <TextView
-                android:id="@+id/detaildescribing"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="10dp"
-                android:background="@drawable/bg_stroke"
-                android:padding="20dp"
-                android:text="Описание"
-                android:textColor="@color/purple"
-                android:textSize="18sp"
-                android:layout_marginTop="3dp"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Условия / Контакты"
-                android:layout_marginTop="10dp"
-                android:textStyle="italic"
-                android:layout_marginHorizontal="10dp"/>
-            <TextView
-                android:id="@+id/detailConditions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="10dp"
-                android:background="@drawable/bg_stroke"
-                android:padding="20dp"
-                android:text="Условия возврата"
-                android:textColor="@color/purple"
-                android:textSize="18sp"
-                android:layout_marginTop="3dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Область"
-                android:layout_marginTop="10dp"
-                android:textStyle="italic"
-                android:layout_marginHorizontal="10dp"/>
-            <TextView
-                android:id="@+id/detailArea"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="3dp"
-                android:background="@drawable/bg_stroke"
-                android:padding="20dp"
-                android:text="Область"
-                android:textColor="@color/purple"
-                android:textSize="18sp" />
+                <ImageView
+                    android:id="@+id/detailImage"
+                    android:layout_width="400dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/arrow_load" />
 
-            <TextView
-                android:id="@+id/detailData"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginTop="10dp"
-                android:gravity="left"
-                android:padding="20dp"
-                android:text="Дата"
-                android:textColor="@color/dark_grey"
-                android:textSize="14sp"
-                android:textStyle="italic"/>
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Описание"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/detaildescribing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/bg_stroke"
+                    android:padding="20dp"
+                    android:text="Описание"
+                    android:textColor="@color/purple"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Условия / Контакты"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/detailConditions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/bg_stroke"
+                    android:padding="20dp"
+                    android:text="Условия возврата"
+                    android:textColor="@color/purple"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Область"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/detailArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/bg_stroke"
+                    android:padding="20dp"
+                    android:text="Область"
+                    android:textColor="@color/purple"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/detailData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="10dp"
+                    android:gravity="left"
+                    android:padding="20dp"
+                    android:text="Дата"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="14sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+        </ScrollView>
 
         <RelativeLayout
+            android:id="@+id/rlDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

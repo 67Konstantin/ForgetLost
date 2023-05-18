@@ -1,10 +1,13 @@
-package com.example.forgetlost;
+package com.example.forgetlost.helperClasses;
 
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.example.forgetlost.fragments.GiftFragmentMyRecords;
+import com.example.forgetlost.fragments.LostFragmentMyRecords;
 
 public class PageViewAdapter extends FragmentPagerAdapter {
     private Context myContext;

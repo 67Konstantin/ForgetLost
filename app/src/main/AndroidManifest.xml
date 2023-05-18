@@ -17,30 +17,30 @@
         android:theme="@style/Theme.ForgetLost"
         tools:targetApi="31">
         <activity
-            android:name=".MyRecords"
+            android:name=".activities.MyRecords"
             android:exported="false" />
         <activity
-            android:name=".SettingsProfile"
+            android:name=".activities.SettingsProfile"
             android:exported="false" />
         <activity
-            android:name=".DetailActivity"
+            android:name=".activities.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".Verification"
+            android:name=".activities.Verification"
             android:exported="false" />
         <activity
-            android:name=".Registration"
+            android:name=".activities.Registration"
             android:exported="false" />
         <activity
-            android:name=".ProgressBar"
+            android:name=".activities.ProgressBar"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Login"
+            android:name=".activities.Login"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".List"
+            android:name=".activities.List"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

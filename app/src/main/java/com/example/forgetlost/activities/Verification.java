@@ -1,4 +1,4 @@
-package com.example.forgetlost;
+package com.example.forgetlost.activities;
 
 
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.forgetlost.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -40,13 +41,13 @@ public class Verification extends AppCompatActivity {
         FirebaseAuth.getInstance().getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(Verification.this, "Вы успешно подтвердили почту", Toast.LENGTH_SHORT).show();
+                showToast( "Вы успешно подтвердили почту");
                 startActivity(new Intent(Verification.this, List.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Verification.this, "Вы не подтвердили почту", Toast.LENGTH_SHORT).show();
+                showToast("Вы не подтвердили почту");
 
             }
         });
@@ -59,9 +60,9 @@ public class Verification extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(Verification.this, "Письмо было отправлено на вашу почту", Toast.LENGTH_SHORT).show();
+                    showToast("Письмо было отправлено на вашу почту");
                 } else {
-                    Toast.makeText(Verification.this, "Не удалось отправить письмо, попробуйте позже", Toast.LENGTH_SHORT).show();
+                    showToast( "Не удалось отправить письмо, попробуйте позже");
                 }
             }
         });
@@ -69,5 +70,8 @@ public class Verification extends AppCompatActivity {
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

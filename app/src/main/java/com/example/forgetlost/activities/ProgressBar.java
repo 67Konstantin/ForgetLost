@@ -1,10 +1,12 @@
-package com.example.forgetlost;
+package com.example.forgetlost.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+
+import com.example.forgetlost.R;
 
 public class ProgressBar extends AppCompatActivity {
 
