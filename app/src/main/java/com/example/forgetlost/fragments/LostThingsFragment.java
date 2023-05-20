@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -14,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.forgetlost.ALodingDialog;
 import com.example.forgetlost.helperClasses.HelperClassThings;
-import com.example.forgetlost.helperClasses.MyAdapter;
+import com.example.forgetlost.helperClasses.MyAdapterThings;
 import com.example.forgetlost.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 public class LostThingsFragment extends Fragment {
@@ -32,7 +36,7 @@ public class LostThingsFragment extends Fragment {
     ValueEventListener eventListener;
     RecyclerView recyclerView;
     List<HelperClassThings> dataList;
-    MyAdapter adapter;
+    MyAdapterThings adapter;
     SearchView searchView;
     private ALodingDialog aLodingDialog;
 
@@ -45,31 +49,32 @@ public class LostThingsFragment extends Fragment {
         searchView.clearFocus();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
-
         aLodingDialog = new ALodingDialog(getActivity());
         aLodingDialog.show();
         Handler handler = new Handler();
         Runnable runnable = () -> aLodingDialog.cancel();
-        handler.postDelayed(runnable,400000);
+        handler.postDelayed(runnable, 400000);
         dataList = new ArrayList<>();
-        adapter = new MyAdapter(getActivity(), dataList);
+        adapter = new MyAdapterThings(getActivity(), dataList);
         recyclerView.setAdapter(adapter);
         databaseReference = FirebaseDatabase.getInstance().getReference("things").child("Находка");
-
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataList.clear();
                 HashMap<String, HelperClassThings> hashMap = (HashMap<String, HelperClassThings>) snapshot.getValue();
                 for (String s : hashMap.keySet()) {
-                    for (DataSnapshot ds : snapshot.child(s).getChildren()) {
-                        HelperClassThings helperClassThings = ds.getValue(HelperClassThings.class);
-                        dataList.add(helperClassThings);
+                    if (!(Objects.equals(s, FirebaseAuth.getInstance().getUid()))) {
+                        for (DataSnapshot ds : snapshot.child(s).getChildren()) {
+                            HelperClassThings helperClassThings = ds.getValue(HelperClassThings.class);
+                            dataList.add(helperClassThings);
+                        }
+                        adapter.notifyDataSetChanged();
+                        aLodingDialog.cancel();
                     }
-                    adapter.notifyDataSetChanged();
-                    aLodingDialog.cancel();
                 }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

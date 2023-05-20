@@ -22,12 +22,12 @@ public class MessageFragment extends Fragment {
         button.setOnClickListener(v -> {
 
         });
-
         return view;
     }
-    public void replaceFragment(){
+
+    public void replaceFragment() {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,new UsersMessagesFragment());
+        fragmentTransaction.replace(R.id.frame_layout, new UsersMessagesFragment());
         fragmentTransaction.commit();
     }
 

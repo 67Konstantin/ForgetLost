@@ -19,16 +19,20 @@ import com.example.forgetlost.activities.Registration;
 import com.example.forgetlost.activities.SettingsProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class ProfileFragment extends Fragment {
     Button btSingOut;
+    DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
     FrameLayout flImageProfile;
     ImageView ivImageProfile;
     TextView tvNameProfile, tvEmailProfile, tvSettingsProfile, tvMyRecords, tvAboutApp;
     String uid;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -46,7 +50,9 @@ public class ProfileFragment extends Fragment {
             tvMyRecords = view.findViewById(R.id.tvMyRecords);
             btSingOut = view.findViewById(R.id.button);
             uid = user.getUid();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
         }
+
         btSingOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

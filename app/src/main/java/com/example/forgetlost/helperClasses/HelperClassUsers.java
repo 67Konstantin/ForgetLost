@@ -1,17 +1,26 @@
 package com.example.forgetlost.helperClasses;
 
 public class HelperClassUsers {
-    String email, name, uid;
+    String email, name, uid, image;
 
     public HelperClassUsers() {
     }
 
-    public HelperClassUsers(String email, String name, String uid) {
+    public HelperClassUsers(String email, String name, String uid, String image) {
         this.email = email;
         this.name = name;
         this.uid = uid;
+        this.image = image;
+
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
     public String getEmail() {
         return email;
     }

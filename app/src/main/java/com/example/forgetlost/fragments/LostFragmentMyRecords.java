@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.forgetlost.ALodingDialog;
 import com.example.forgetlost.helperClasses.HelperClassThings;
-import com.example.forgetlost.helperClasses.MyAdapter;
+import com.example.forgetlost.helperClasses.MyAdapterThings;
 import com.example.forgetlost.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,7 +62,7 @@ public class LostFragmentMyRecords extends Fragment {
     ValueEventListener eventListener;
     RecyclerView recyclerView;
     List<HelperClassThings> dataList;
-    MyAdapter adapter;
+    MyAdapterThings adapter;
     SearchView searchView;
     private ALodingDialog aLodingDialog;
     FirebaseUser user;
@@ -85,7 +85,7 @@ View view = inflater.inflate(R.layout.fragment_lost_my_records, container, false
         Runnable runnable = () -> aLodingDialog.cancel();
         handler.postDelayed(runnable,400000);
         dataList = new ArrayList<>();
-        adapter = new MyAdapter(getActivity(), dataList);
+        adapter = new MyAdapterThings(getActivity(), dataList);
         recyclerView.setAdapter(adapter);
         databaseReference = FirebaseDatabase.getInstance().getReference("things").child("Находка").child(user.getUid());
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {

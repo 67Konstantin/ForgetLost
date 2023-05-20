@@ -15,8 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.forgetlost.ALodingDialog;
 import com.example.forgetlost.helperClasses.HelperClassThings;
-import com.example.forgetlost.helperClasses.MyAdapter;
+import com.example.forgetlost.helperClasses.MyAdapterThings;
 import com.example.forgetlost.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 public class GiftFragment extends Fragment {
@@ -33,7 +35,7 @@ public class GiftFragment extends Fragment {
     ValueEventListener eventListener;
     RecyclerView recyclerView;
     List<HelperClassThings> dataList;
-    MyAdapter adapter;
+    MyAdapterThings adapter;
     SearchView searchView;
     ALodingDialog aLodingDialog;
 
@@ -57,11 +59,11 @@ public class GiftFragment extends Fragment {
                 aLodingDialog.cancel();
             }
         };
-        handler.postDelayed(runnable,5000);
+        handler.postDelayed(runnable, 5000);
 
 
         dataList = new ArrayList<>();
-        adapter = new MyAdapter(getActivity(), dataList);
+        adapter = new MyAdapterThings(getActivity(), dataList);
         recyclerView.setAdapter(adapter);
         databaseReference = FirebaseDatabase.getInstance().getReference("things").child("Отдам даром");
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
@@ -70,12 +72,14 @@ public class GiftFragment extends Fragment {
                 dataList.clear();
                 HashMap<String, HelperClassThings> hashMap = (HashMap<String, HelperClassThings>) snapshot.getValue();
                 for (String s : hashMap.keySet()) {
-                    for (DataSnapshot ds : snapshot.child(s).getChildren()) {
-                        HelperClassThings helperClassThings = ds.getValue(HelperClassThings.class);
-                        dataList.add(helperClassThings);
+                    if (!(Objects.equals(s, FirebaseAuth.getInstance().getUid()))) {
+                        for (DataSnapshot ds : snapshot.child(s).getChildren()) {
+                            HelperClassThings helperClassThings = ds.getValue(HelperClassThings.class);
+                            dataList.add(helperClassThings);
+                        }
+                        adapter.notifyDataSetChanged();
+                        aLodingDialog.cancel();
                     }
-                    adapter.notifyDataSetChanged();
-                    aLodingDialog.cancel();
                 }
             }
 

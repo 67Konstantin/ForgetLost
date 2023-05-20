@@ -19,25 +19,25 @@ import com.example.forgetlost.activities.DetailActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class MyAdapterThings extends RecyclerView.Adapter<MyViewHolderThings> {
 
     private Context context;
     private List<HelperClassThings> dataList;
 
-    public MyAdapter(Context context, List<HelperClassThings> dataList) {
+    public MyAdapterThings(Context context, List<HelperClassThings> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-        return new MyViewHolder(view);
+    public MyViewHolderThings onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_things, parent, false);
+        return new MyViewHolderThings(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolderThings holder, int position) {
         String name = dataList.get(position).getName();
         String describing = dataList.get(position).getDescribing();
         String data = dataList.get(position).getData().substring(0, dataList.get(position).getData().indexOf(","));
@@ -79,19 +79,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 }
 
-class MyViewHolder extends RecyclerView.ViewHolder {
+class MyViewHolderThings extends RecyclerView.ViewHolder {
 
     ImageView listImage;
     TextView listName, listDescribing, listData;
     CardView recCard;
 
-    public MyViewHolder(@NonNull View itemView) {
+    public MyViewHolderThings(@NonNull View itemView) {
         super(itemView);
 
-        listImage = itemView.findViewById(R.id.listImage);
-        recCard = itemView.findViewById(R.id.recCard);
-        listDescribing = itemView.findViewById(R.id.listDescribing);
-        listData = itemView.findViewById(R.id.listTime);
-        listName = itemView.findViewById(R.id.listName);
+        listImage = itemView.findViewById(R.id.listImageThings);
+        recCard = itemView.findViewById(R.id.recCardThings);
+        listDescribing = itemView.findViewById(R.id.listDescribingThings);
+        listData = itemView.findViewById(R.id.listTimeThings);
+        listName = itemView.findViewById(R.id.listNameThings);
     }
 }
