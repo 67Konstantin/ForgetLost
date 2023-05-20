@@ -34,9 +34,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.forgetlost.ALodingDialog;
 import com.example.forgetlost.fragments.GiftFragment;
+import com.example.forgetlost.fragments.UsersMessagesFragment;
 import com.example.forgetlost.helperClasses.HelperClassThings;
 import com.example.forgetlost.fragments.LostThingsFragment;
-import com.example.forgetlost.fragments.MessageFragment;
 import com.example.forgetlost.fragments.ProfileFragment;
 import com.example.forgetlost.R;
 import com.example.forgetlost.databinding.ActivityListActivtyBinding;
@@ -60,6 +60,7 @@ import java.util.Locale;
 public class List extends AppCompatActivity {
     ImageView photoThing;
     ActivityListActivtyBinding binding;
+
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     private Uri filePath;
@@ -77,7 +78,9 @@ public class List extends AppCompatActivity {
     EditText name1;
     String uid;
     boolean x;
+    FragmentManager myFragmentManager;
     String imageURL;
+    UsersMessagesFragment usersMessagesFragment = new UsersMessagesFragment();
 
     EditText describing1, conditions1, area1;
 
@@ -102,16 +105,16 @@ public class List extends AppCompatActivity {
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.home:
+                case R.id.lost:
                     replaceFragment(new LostThingsFragment());
                     break;
-                case R.id.shorts:
+                case R.id.gift:
                     replaceFragment(new GiftFragment());
                     break;
-                case R.id.subscriptions:
-                    replaceFragment(new MessageFragment());
+                case R.id.messages:
+                    replaceFragment(new UsersMessagesFragment());
                     break;
-                case R.id.library:
+                case R.id.profile:
                     replaceFragment(new ProfileFragment());
                     break;
             }
@@ -126,7 +129,7 @@ public class List extends AppCompatActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
@@ -276,7 +279,7 @@ public class List extends AppCompatActivity {
         reference.setValue(helperClassThings).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     dialog.dismiss();
                     aLodingDialog.cancel();
                 }
@@ -324,6 +327,7 @@ public class List extends AppCompatActivity {
             }
         }
     }
+
     public void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }

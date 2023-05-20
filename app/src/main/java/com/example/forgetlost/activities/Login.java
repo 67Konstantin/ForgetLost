@@ -57,16 +57,6 @@ public class Login extends AppCompatActivity {
         startActivity(new Intent(Login.this, Registration.class));
     }
 
-    public boolean validatePassword() {
-        String val = loginPassword.getText().toString();
-        if (val.isEmpty()) {
-            loginPassword.setError("Поле ввода не может быть пустым");
-            return false;
-        } else {
-            loginPassword.setError(null);
-            return true;
-        }
-    }
 
     public void checkUser() {
         String username = loginUserEmail.getText().toString().trim();

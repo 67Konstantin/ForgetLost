@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/lost"
         android:title="Находки"
         android:icon="@drawable/icon_lost_things"/>
 
     <item
-        android:id="@+id/shorts"
+        android:id="@+id/gift"
         android:title="Даром"
         android:icon="@drawable/icon_gift"
         />
@@ -17,11 +17,11 @@
         android:title=""/>
 
     <item
-        android:id="@+id/subscriptions"
+        android:id="@+id/messages"
         android:title="Месседжер"
         android:icon="@drawable/icon_messenger" />
     <item
-        android:id="@+id/library"
+        android:id="@+id/profile"
         android:title="Профиль"
         android:icon="@drawable/icon_person" />
 

@@ -101,6 +101,50 @@ public class Registration extends AppCompatActivity {
         startActivity(new Intent(Registration.this, Login.class));
     }
 
+    public Boolean isFieldRight() {
+        if (checkEmail(etEmail)) {
+            etEmail.setError(null);
+
+            if (etname.getText().toString().length() != 0) {
+                etname.setError(null);
+
+                if (password.length() >= 6) {
+                    etPassword.setError(null);
+                    if (!password.matches("(.*) (.*)")) {
+                        if (checkBox.isChecked()) {
+                            return true;
+                        } else {
+                            Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+                            checkBox.setAnimation(shake);
+                            checkBox.setDrawingCacheBackgroundColor(Color.RED);
+                            vibrator.vibrate(mls);
+                            return false;
+                        }
+
+                    } else {
+                        etPassword.setError("Пароль не должен содержать пробелы");
+                        vibrator.vibrate(mls);
+                        return false;
+                    }
+
+                } else {
+                    etPassword.setError("Пароль должен содержать не менее 6 символов");
+                    vibrator.vibrate(mls);
+                    return false;
+                }
+            } else {
+                etname.setError("Вы не ввели имя");
+                vibrator.vibrate(mls);
+                return false;
+            }
+        } else {
+            etEmail.setError("Некорректно введена почта ");
+            vibrator.vibrate(mls);
+            return false;
+        }
+
+    }
+
     public void RegClick(View view) {
         if (isNetworkConnected()) {
 
@@ -109,85 +153,60 @@ public class Registration extends AppCompatActivity {
             String name = etname.getText().toString();
 
             if (x == 0) {
-                if (checkEmail(etEmail)) {
-                    etEmail.setError(null);
-                    if (etname.getText().toString().length() != 0) {
-                        etname.setError(null);
-                        if (password.length() >= 8) {
-                            etPassword.setError(null);
-                            if (!password.matches("(.*) (.*)")) {
-                                etPassword.setError(null);
-                                if (checkBox.isChecked()) {
 
-                                    firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if (task.isSuccessful()) {
-                                                showToast("Пользователь с этой почтой уже существует и вы ввели правильный пароль");
-                                                startActivity(new Intent(Registration.this, List.class));
-                                            }
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                                    if (task.isSuccessful()) {
-                                                        dataBase = FirebaseDatabase.getInstance();
-                                                        reference = dataBase.getReference("users");
-                                                        uid = FirebaseAuth.getInstance().getUid();
-                                                        HelperClassUsers helperClass = new HelperClassUsers(email, name, uid);
-                                                        reference.child(uid).setValue(helperClass);
-                                                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if (task.isSuccessful()) {
-                                                                    linearLayout.addView(layer1);
-                                                                    setMargins(tv2, 18, 300, 18, 10);
-                                                                    showToast("Письмо было отправлено на почту " + email);
-                                                                    btReg.setText("Проверить Верификацию");
-                                                                    x = 1;
-                                                                } else {
-                                                                    showToast("Не удалось отправить письмо");
-                                                                }
-                                                            }
-                                                        });
-                                                    } else {
-                                                        showToast("Пользователь с этой почтой уже зарегестрирован");
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    });
-                                } else {
-                                    Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-                                    checkBox.setAnimation(shake);
-                                    checkBox.setDrawingCacheBackgroundColor(Color.RED);
-                                    vibrator.vibrate(mls);
-                                }
-                            } else {
-                                etPassword.setError("Пароль не должен содержать пробелы");
-                                vibrator.vibrate(mls);
+                if (isFieldRight()) {
+
+
+                    firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                showToast("Пользователь с этой почтой уже существует и вы ввели правильный пароль");
+                                startActivity(new Intent(Registration.this, List.class));
                             }
-                        } else {
-                            etPassword.setError("Пароль должен содержать не менее 8 символов");
-                            vibrator.vibrate(mls);
                         }
-                    } else {
-                        etname.setError("Вы не ввели имя");
-                        vibrator.vibrate(mls);
-                    }
-                } else {
-                    etEmail.setError("Некорректно введена почта ");
-                    vibrator.vibrate(mls);
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        dataBase = FirebaseDatabase.getInstance();
+                                        reference = dataBase.getReference("users");
+                                        uid = FirebaseAuth.getInstance().getUid();
+                                        HelperClassUsers helperClass = new HelperClassUsers(email, name, uid);
+                                        reference.child(uid).setValue(helperClass);
+                                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    linearLayout.addView(layer1);
+                                                    setMargins(tv2, 18, 300, 18, 10);
+                                                    showToast("Письмо было отправлено на почту " + email);
+                                                    btReg.setText("Проверить Верификацию");
+                                                    x = 1;
+                                                } else {
+                                                    showToast("Не удалось отправить письмо");
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        showToast("Пользователь с этой почтой уже зарегестрирован");
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+
                 }
             } else if (x == 1) {
                 FirebaseAuth.getInstance().getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
-                            showToast( "Вы успешно подтвердили почту");
+                            showToast("Вы успешно подтвердили почту");
                             startActivity(new Intent(Registration.this, List.class));
                         } else {
                             showToast("Вы не подтвердили почту");
@@ -205,6 +224,7 @@ public class Registration extends AppCompatActivity {
         }
 
     }
+
     public void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
